@@ -1,0 +1,28 @@
+plugins {
+    id "org.springframework.boot" version "1.4.3.RELEASE"
+}
+
+apply plugin: 'org.springframework.boot'
+group 'com.github.dwendelen'
+version '1'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile 'org.axonframework:axon-core:3.0-RC2'
+    compile 'org.axonframework:axon-spring-boot-autoconfigure:3.0-RC2'
+    compile 'org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE'
+
+    compile 'com.datastax.cassandra:cassandra-driver-core:3.1.2'
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.axonframework:axon-test:3.0-RC2'
+    testCompile 'org.mockito:mockito-core:2.5.0'
+}
