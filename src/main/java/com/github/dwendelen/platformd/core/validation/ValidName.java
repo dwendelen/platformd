@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 @Constraint(validatedBy = {})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidName {
-    String message() default "Amount must be greater then 0";
+    String message() default "Invalid name";
 
     Class<?>[] groups() default {};
 
