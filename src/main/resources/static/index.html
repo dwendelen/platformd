@@ -18,7 +18,7 @@
     <div ng-app="platformd" ng-controller="controller as ctrl">
         <div id="loginContainer">
             <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onFailed"></div>
-            <div id="token">{{ctrl.token}}</div>
+            <button ng-show="ctrl.loggedIn" ng-click="ctrl.logout()">Logout</button>
         </div>
         <h1>Accounts</h1>
         <table>

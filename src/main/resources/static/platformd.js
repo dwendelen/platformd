@@ -4,6 +4,9 @@ app.service('loginService', function () {
     this.login = function (token) {
         this.token = token;
     };
+    this.logout = function () {
+        delete this.token;
+    };
     this.getToken = function () {
         if(!self.isLoggedIn()) {
             throw "Not logged in";
@@ -14,63 +17,56 @@ app.service('loginService', function () {
         return this.token !== undefined;
     }
 });
-
-app.service('resourceProvider', function ($resource, loginService) {
-    function resourceProperties() {
-        return {
-            'query': {
-                isArray: true,
-                headers: { 'Token': loginService.getToken() }
-            },
-            'save': {
-                method: "POST",
-                headers: { 'Token': loginService.getToken() }
-            }
-        }
-    }
-
-    this.getAccount = function() {
-        if(this.account === undefined) {
-            this.account = $resource("/api/accounts", {}, resourceProperties());
-        }
-        return this.account;
-    };
-    this.getTransaction = function() {
-        if(this.transaction === undefined) {
-            this.transaction = $resource("/api/accounts/:accountId/transactions", {}, resourceProperties());
-        }
-        return this.transaction;
-    };
-    this.getBudget = function() {
-        if(this.budget === undefined) {
-            this.budget = $resource("/api/budget", {}, resourceProperties());
-        }
-        return this.budget;
-    };
+app.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('headerInserter');
 });
-app.controller('controller', function ($scope, loginService, resourceProvider) {
+
+app.service('headerInserter', function (loginService) {
+    this.request = function (config) {
+        if (loginService.isLoggedIn()) {
+            config.headers.Token = loginService.getToken();
+        }
+        return config;
+    }
+});
+app.factory('Account', function ($resource) {
+    return $resource("/api/accounts");
+});
+app.factory('Budget', function ($resource) {
+    return $resource("/api/budget");
+});
+app.factory('Transaction', function ($resource) {
+    return $resource("/api/accounts/:accountId/transactions");
+});
+app.controller('controller', function ($scope, loginService, Account, Budget, Transaction) {
     var self = this;
     function loadAccounts() {
-        self.accounts = resourceProvider.getAccount().query();
+        self.accounts = Account.query();
     }
     this.login = function (token) {
-        self.token = token;
         loginService.login(token);
-
+        self.loggedIn = true;
         loadAccounts();
 
-        self.budgetItems = resourceProvider.getBudget().query();
+        self.budgetItems = Budget.query();
+    };
+    this.logout = function() {
+        gapi.auth2.getAuthInstance().signOut();
+        loginService.logout();
+        self.loggedIn = false;
+
+        self.budgetItems = [];
+        self.accounts = [];
     };
     this.createAccount = function (name) {
-        var Account = resourceProvider.getAccount();
         var newAccount = new Account();
         newAccount.name = name;
         newAccount.initialBalance = 0;
         newAccount.$save(loadAccounts());
     };
     this.getTransactions = function(account) {
-        account.transactions = resourceProvider.getTransaction().query({accountId: account.uuid});
-    }
+        account.transactions = Transaction.query({accountId: account.uuid});
+    };
 });
 
 function onSignIn(googleUser) {
@@ -81,7 +77,7 @@ function onSignIn(googleUser) {
     var controller = element.controller();
 
     scope.$apply(function () {
-        controller.login(id_token)
+        controller.login(id_token);
     });
 }
 
