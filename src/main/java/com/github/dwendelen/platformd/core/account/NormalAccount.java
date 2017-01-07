@@ -26,6 +26,7 @@ public class NormalAccount {
         NormalAccountCreated normalAccountCreated = new NormalAccountCreated();
         normalAccountCreated.uuid = command.uuid;
         normalAccountCreated.name = command.name;
+        normalAccountCreated.initialBalance = command.initialBalance;
 
         apply(normalAccountCreated);
     }

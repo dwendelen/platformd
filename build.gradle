@@ -16,13 +16,25 @@ repositories {
 
 dependencies {
 
-    compile 'org.axonframework:axon-core:3.0-RC2'
-    compile 'org.axonframework:axon-spring-boot-autoconfigure:3.0-RC2'
     compile 'org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE'
 
     compile 'com.datastax.cassandra:cassandra-driver-core:3.1.2'
+    compile 'com.datastax.cassandra:cassandra-driver-extras:3.1.2'
+
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.5'
+
+    compile 'org.axonframework:axon-core:3.0-RC2'
+    compile 'org.axonframework:axon-spring-boot-autoconfigure:3.0-RC2'
+
+    compile 'com.google.api-client:google-api-client:1.22.0'
+
 
     testCompile 'junit:junit:4.11'
-    testCompile 'org.axonframework:axon-test:3.0-RC2'
+    testCompile 'org.assertj:assertj-core:3.3.0'
+    //testCompile 'org.assertj:assertj-core-java8:3.3.0'
     testCompile 'org.mockito:mockito-core:2.5.0'
+
+    testCompile 'org.springframework:spring-test:4.3.5.RELEASE'
+
+    testCompile 'org.axonframework:axon-test:3.0-RC2'
 }
