@@ -12,9 +12,25 @@ import java.util.UUID;
 
 public class CreateNormalAccount {
     @NotNull
-    public UUID uuid = UUID.randomUUID();
+    private UUID uuid = UUID.randomUUID();
     @ValidName
-    public String name;
-    @ValidAmount
-    public BigDecimal initialBalance = BigDecimal.ZERO;
+    private String name;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public CreateNormalAccount setUuid(UUID uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public CreateNormalAccount setName(String name) {
+        this.name = name;
+        return this;
+    }
 }

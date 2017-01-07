@@ -1,9 +1,7 @@
 package com.github.dwendelen.platformd.rest;
 
-import com.github.dwendelen.platformd.core.account.ReadAccount;
-import com.github.dwendelen.platformd.core.account.command.CreateNormalAccount;
-import com.github.dwendelen.platformd.core.budget.ReadBudgetItem;
-import com.github.dwendelen.platformd.core.budget.ReadBudgetItemDao;
+import com.github.dwendelen.platformd.read.ReadBudgetItem;
+import com.github.dwendelen.platformd.read.ReadBudgetItemDao;
 import com.github.dwendelen.platformd.core.budget.command.CreateBudgetItem;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +31,8 @@ public class BudgetItemController {
 
     @RequestMapping(method = RequestMethod.POST)
     public void createAccount(@RequestBody ReadBudgetItem readAccount) {
-        CreateBudgetItem createBudgetItem = new CreateBudgetItem();
-        createBudgetItem.name = readAccount.name;
+        CreateBudgetItem createBudgetItem = new CreateBudgetItem()
+                .setName(readAccount.name);
 
         commandGateway.sendAndWait(createBudgetItem);
     }

@@ -23,8 +23,8 @@ public class BudgetItem {
     @CommandHandler
     public BudgetItem(CreateBudgetItem command) {
         BudgetItemCreated budgetItemCreated = new BudgetItemCreated();
-        budgetItemCreated.uuid = command.uuid;
-        budgetItemCreated.name = command.name;
+        budgetItemCreated.uuid = command.getUuid();
+        budgetItemCreated.name = command.getName();
 
         apply(budgetItemCreated);
     }

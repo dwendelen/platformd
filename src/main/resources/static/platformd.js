@@ -36,7 +36,7 @@ app.factory('Budget', function ($resource) {
     return $resource("/api/budget");
 });
 app.factory('Transaction', function ($resource) {
-    return $resource("/api/accounts/:accountId/transactions");
+    return $resource("/api/accounts/:accountId/transactions", {accountId: '@accountId'});
 });
 app.controller('controller', function ($scope, loginService, Account, Budget, Transaction) {
     var self = this;
@@ -58,10 +58,9 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
         self.budgetItems = [];
         self.accounts = [];
     };
-    this.createAccount = function (name, initialBalance) {
+    this.createAccount = function (name) {
         var newAccount = new Account();
         newAccount.name = name;
-        newAccount.initialBalance = initialBalance;
         newAccount.$save(function (newAcc) {
             self.accounts.push(newAcc);
         });
@@ -71,6 +70,17 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
             account.transactions = Transaction.query({accountId: account.uuid});
         }
         account.showTransactions = !account.showTransactions;
+    };
+    this.addTransaction = function(account, timestamp, amount, comment) {
+        var trans = new Transaction({accountId: account.uuid});
+        trans.timestamp = timestamp;
+        trans.amount = amount;
+        trans.comment = comment;
+
+        trans.$save(function() {
+            account.transactions.push(trans);
+            account.balance += Number(trans.amount);
+        });
     };
 });
 

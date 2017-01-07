@@ -1,9 +1,8 @@
-package com.github.dwendelen.platformd.core.budget;
+package com.github.dwendelen.platformd.read;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.github.dwendelen.platformd.core.account.event.NormalAccountCreated;
 import com.github.dwendelen.platformd.core.budget.event.BudgetItemCreated;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;

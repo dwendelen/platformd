@@ -3,6 +3,7 @@ package com.github.dwendelen.platformd.infrastructure;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
+import com.datastax.driver.mapping.MappingManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,5 +18,10 @@ public class CassandraConfig {
         cluster.getConfiguration().getCodecRegistry()
                 .register(InstantCodec.instance);
         return cluster.connect("platformd");
+    }
+
+    @Bean
+    public MappingManager mappingManager(Session session) {
+        return new MappingManager(session);
     }
 }

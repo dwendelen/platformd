@@ -16,6 +16,7 @@ public class CassandraDomainEventStream implements DomainEventStream {
     private Function<Long, ResultSetFuture> query;
     private Function<Row, DomainEventMessage<?>> mapper;
 
+    private long lastSeqNumber = 0;
 
     public CassandraDomainEventStream(Function<Long, ResultSetFuture> query, Function<Row, DomainEventMessage<?>> mapper, long firstPartition) {
         this.nextPartition = firstPartition;
@@ -51,6 +52,7 @@ public class CassandraDomainEventStream implements DomainEventStream {
     @Override
     public DomainEventMessage<?> next() {
         DomainEventMessage<?> next = peek;
+        lastSeqNumber = peek.getSequenceNumber();
         fetchNextPeek();
         return next;
     }
@@ -62,7 +64,7 @@ public class CassandraDomainEventStream implements DomainEventStream {
 
     @Override
     public Long getLastSequenceNumber() {
-        throw new UnsupportedOperationException();
+        return lastSeqNumber;
     }
 
     private void fetchNextPeek() {

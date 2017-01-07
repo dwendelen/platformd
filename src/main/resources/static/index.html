@@ -22,22 +22,38 @@
         </div>
         <h1>Accounts</h1>
         <table>
+            <tr>
+                <td><input type="text" ng-model="name"> <button ng-click="ctrl.createAccount(name)">Add</button></td>
+            </tr>
             <tr ng-repeat="account in ctrl.accounts">
-                <td><a ng-click="ctrl.clickedOnAccount(account)">{{account.name}}</a><br>
+                <td><a ng-click="ctrl.clickedOnAccount(account)">{{account.name}} {{account.balance}}</a><br>
                     <table ng-show="account.showTransactions">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Amount</th>
+                                <th>Comment</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td><input type="text" ng-model="timestamp" value="2017-01-07T18:10:19Z"></td>
+                            <td><input type="text" ng-model="amount"></td>
+                            <td><input type="text" ng-model="comment"></td>
+                            <td><button ng-click="ctrl.addTransaction(account, timestamp, amount, comment)">Add</button></td>
+                        </tr>
                         <tr ng-repeat="transaction in account.transactions">
                             <td>{{transaction.timestamp}}</td>
                             <td>{{transaction.amount}}</td>
                             <td>{{transaction.comment}}</td>
+                            <td></td>
                         </tr>
                     </table>
 
                 </td>
             </tr>
         </table>
-        <tr>
-            <td><input type="text" ng-model="name"> <input type="text" ng-model="initialBalance" value="0"> <button ng-click="ctrl.createAccount(name,initialBalance)">Add</button></td>
-        </tr>
+
         <h1>Budget</h1>
         <table>
             <tr ng-repeat="budgetItem in ctrl.budgetItems">

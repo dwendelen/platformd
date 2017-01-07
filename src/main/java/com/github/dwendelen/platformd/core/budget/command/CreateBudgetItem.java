@@ -7,7 +7,25 @@ import java.util.UUID;
 
 public class CreateBudgetItem {
     @NotNull
-    public UUID uuid = UUID.randomUUID();
+    private UUID uuid = UUID.randomUUID();
     @ValidName
-    public String name;
+    private String name;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public CreateBudgetItem setUuid(UUID uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public CreateBudgetItem setName(String name) {
+        this.name = name;
+        return this;
+    }
 }
