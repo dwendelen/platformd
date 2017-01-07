@@ -1,6 +1,7 @@
 package com.github.dwendelen.platformd.core.account.command;
 
 import com.github.dwendelen.platformd.core.validation.ValidAmount;
+import com.github.dwendelen.platformd.core.validation.ValidName;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.DecimalMin;
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class CreateNormalAccount {
     @NotNull
     public UUID uuid = UUID.randomUUID();
-    @Size(min = 1)
+    @ValidName
     public String name;
     @ValidAmount
     public BigDecimal initialBalance = BigDecimal.ZERO;
