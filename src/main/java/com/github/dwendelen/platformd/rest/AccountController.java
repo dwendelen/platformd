@@ -26,18 +26,26 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/{account}/transactions", method = RequestMethod.GET)
-    public List<ReadTransaction> getTransactions(@PathVariable("account")UUID accountUuid) {
+    public List<ReadTransaction> getTransactions(@PathVariable("account") UUID accountUuid) {
         return readAccountDao.getTransactions(accountUuid);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void createAccount(@RequestBody CreateAccount createAccount) {
+    @ResponseBody
+    public ReadAccount createAccount(@RequestBody CreateAccount createAccount) {
         CreateNormalAccount createNormalAccount = new CreateNormalAccount();
         createNormalAccount.name = createAccount.name;
         createNormalAccount.initialBalance = createAccount.initialBalance;
 
-        commandGateway.sendAndWait(createNormalAccount);
+        UUID uuid = commandGateway.sendAndWait(createNormalAccount);
+        return readAccountDao.getAccount(uuid);
     }
+
+    @RequestMapping(value = "/{account}", method = RequestMethod.DELETE)
+    public void deleteAccount(@PathVariable("account") UUID accountUuid) {
+        throw new UnsupportedOperationException();
+    }
+
     private static class CreateAccount {
         public String name;
         public BigDecimal initialBalance;

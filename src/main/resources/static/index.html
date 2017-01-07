@@ -23,11 +23,12 @@
         <h1>Accounts</h1>
         <table>
             <tr ng-repeat="account in ctrl.accounts">
-                <td><a ng-click="ctrl.getTransactions(account)">{{account.name}}</a><br>
-                    <table>
+                <td><a ng-click="ctrl.clickedOnAccount(account)">{{account.name}}</a><br>
+                    <table ng-show="account.showTransactions">
                         <tr ng-repeat="transaction in account.transactions">
-                            <td>{{transaction.transactionUuid}}</td>
+                            <td>{{transaction.timestamp}}</td>
                             <td>{{transaction.amount}}</td>
+                            <td>{{transaction.comment}}</td>
                         </tr>
                     </table>
 
@@ -35,7 +36,7 @@
             </tr>
         </table>
         <tr>
-            <td><input type="text" ng-model="name"> <button ng-click="ctrl.createAccount(name)">Add</button></td>
+            <td><input type="text" ng-model="name"> <input type="text" ng-model="initialBalance" value="0"> <button ng-click="ctrl.createAccount(name,initialBalance)">Add</button></td>
         </tr>
         <h1>Budget</h1>
         <table>

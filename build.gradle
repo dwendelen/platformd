@@ -28,6 +28,8 @@ dependencies {
 
     compile 'com.google.api-client:google-api-client:1.22.0'
 
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
+
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.assertj:assertj-core:3.3.0'

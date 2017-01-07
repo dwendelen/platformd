@@ -58,14 +58,19 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
         self.budgetItems = [];
         self.accounts = [];
     };
-    this.createAccount = function (name) {
+    this.createAccount = function (name, initialBalance) {
         var newAccount = new Account();
         newAccount.name = name;
-        newAccount.initialBalance = 0;
-        newAccount.$save(loadAccounts());
+        newAccount.initialBalance = initialBalance;
+        newAccount.$save(function (newAcc) {
+            self.accounts.push(newAcc);
+        });
     };
-    this.getTransactions = function(account) {
-        account.transactions = Transaction.query({accountId: account.uuid});
+    this.clickedOnAccount = function(account) {
+        if(account.transactions === undefined) {
+            account.transactions = Transaction.query({accountId: account.uuid});
+        }
+        account.showTransactions = !account.showTransactions;
     };
 });
 

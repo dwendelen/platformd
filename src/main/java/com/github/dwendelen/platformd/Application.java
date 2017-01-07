@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @SpringBootApplication
 @EnableScheduling
