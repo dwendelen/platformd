@@ -1,30 +1,30 @@
 var app = angular.module('platformd', ['ngResource']);
-app.service('loginService', function () {
+app.service('tokenHolder', function () {});
+app.service('loginService', function ($http, tokenHolder) {
     var self = this;
-    this.login = function (token) {
-        this.token = token;
+    this.login = function (googleToken, onSucces) {
+        $http.post('api/auth/login', googleToken).then(function(response) {
+            tokenHolder.token = response.data.token;
+            self.user = response.data;
+            onSucces();
+        });
     };
     this.logout = function () {
-        delete this.token;
-    };
-    this.getToken = function () {
-        if(!self.isLoggedIn()) {
-            throw "Not logged in";
-        }
-        return this.token;
+        delete tokenHolder.token;
+        delete self.user;
     };
     this.isLoggedIn = function () {
-        return this.token !== undefined;
-    }
+        return self.user !== undefined;
+    };
 });
 app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('headerInserter');
 });
 
-app.service('headerInserter', function (loginService) {
+app.service('headerInserter', function (tokenHolder) {
     this.request = function (config) {
-        if (loginService.isLoggedIn()) {
-            config.headers.Token = loginService.getToken();
+        if (tokenHolder.token !== undefined) {
+            config.headers.Token = tokenHolder.token;
         }
         return config;
     }
@@ -44,11 +44,12 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
         self.accounts = Account.query();
     }
     this.login = function (token) {
-        loginService.login(token);
-        self.loggedIn = true;
-        loadAccounts();
+        loginService.login(token, function(){
+            self.loggedIn = true;
+            loadAccounts();
 
-        self.budgetItems = Budget.query();
+            self.budgetItems = Budget.query();
+        });
     };
     this.logout = function() {
         gapi.auth2.getAuthInstance().signOut();

@@ -1,14 +1,13 @@
 package com.github.dwendelen.platformd;
 
-import com.github.dwendelen.platformd.infrastructure.google.GoogleFilter;
-import org.axonframework.spring.config.AnnotationDriven;
+import com.github.dwendelen.platformd.infrastructure.authentication.TokenService;
+import com.github.dwendelen.platformd.infrastructure.authentication.UserVerifyingFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @SpringBootApplication
 @EnableScheduling
@@ -19,9 +18,9 @@ public class Application
     }
 
     @Bean
-    public FilterRegistrationBean googleFilter() {
+    public FilterRegistrationBean identityFilter(UserVerifyingFilter filter) {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-        filterRegistrationBean.setFilter(new GoogleFilter());
+        filterRegistrationBean.setFilter(filter);
         filterRegistrationBean.addUrlPatterns("/api/*");
         return filterRegistrationBean;
     }
