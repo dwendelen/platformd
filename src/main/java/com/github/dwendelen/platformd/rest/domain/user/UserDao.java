@@ -1,4 +1,4 @@
-package com.github.dwendelen.platformd.core.user;
+package com.github.dwendelen.platformd.rest.domain.user;
 
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;

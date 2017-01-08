@@ -31,6 +31,7 @@
                         <thead>
                             <tr>
                                 <th>Time</th>
+                                <th>Budget item</th>
                                 <th>Amount</th>
                                 <th>Comment</th>
                                 <th></th>
@@ -38,24 +39,30 @@
                         </thead>
                         <tr>
                             <td><input type="text" ng-model="timestamp" value="2017-01-07T18:10:19Z"></td>
+                            <td>
+                                <select ng-model="budgIt" >
+                                    <option ng-repeat="item in ctrl.budgetItems" value="{{item.uuid}}">{{item.name}}</option>
+                                </select>
+                            </td>
                             <td><input type="text" ng-model="amount"></td>
                             <td><input type="text" ng-model="comment"></td>
-                            <td><button ng-click="ctrl.addTransaction(account, timestamp, amount, comment)">Add</button></td>
+                            <td><button ng-click="ctrl.addTransaction(account, timestamp, amount, comment, budgIt)">Add</button></td>
                         </tr>
                         <tr ng-repeat="transaction in account.transactions">
                             <td>{{transaction.timestamp}}</td>
+                            <td>TODO</td>
                             <td>{{transaction.amount}}</td>
                             <td>{{transaction.comment}}</td>
                             <td></td>
                         </tr>
                     </table>
-
                 </td>
             </tr>
         </table>
 
         <h1>Budget</h1>
         <table>
+            <td><input type="text" ng-model="name"> <button ng-click="ctrl.createBudget(name)">Add</button></td>
             <tr ng-repeat="budgetItem in ctrl.budgetItems">
                 <td>{{budgetItem.name}}</td>
             </tr>

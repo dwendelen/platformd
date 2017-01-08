@@ -1,4 +1,4 @@
-package com.github.dwendelen.platformd.core.user;
+package com.github.dwendelen.platformd.rest.domain.user;
 
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;

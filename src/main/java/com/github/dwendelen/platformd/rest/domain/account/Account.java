@@ -1,4 +1,4 @@
-package com.github.dwendelen.platformd.read;
+package com.github.dwendelen.platformd.rest.domain.account;
 
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Table(name = "account")
-public class ReadAccount {
+public class Account {
     @PartitionKey
     @Column(name = "account_uuid")
     private UUID uuid;
@@ -24,7 +24,7 @@ public class ReadAccount {
         return uuid;
     }
 
-    public ReadAccount setUuid(UUID uuid) {
+    public Account setUuid(UUID uuid) {
         this.uuid = uuid;
         return this;
     }
@@ -33,7 +33,7 @@ public class ReadAccount {
         return name;
     }
 
-    public ReadAccount setName(String name) {
+    public Account setName(String name) {
         this.name = name;
         return this;
     }
@@ -42,7 +42,7 @@ public class ReadAccount {
         return balance;
     }
 
-    public ReadAccount setBalance(BigDecimal balance) {
+    public Account setBalance(BigDecimal balance) {
         this.balance = balance;
         return this;
     }

@@ -1,10 +1,10 @@
 package com.github.dwendelen.platformd.rest;
 
 import com.github.dwendelen.platformd.core.account.command.MakeMoney;
-import com.github.dwendelen.platformd.read.ReadAccount;
-import com.github.dwendelen.platformd.read.ReadAccountDao;
-import com.github.dwendelen.platformd.read.ReadTransaction;
 import com.github.dwendelen.platformd.core.account.command.CreateNormalAccount;
+import com.github.dwendelen.platformd.rest.domain.account.Account;
+import com.github.dwendelen.platformd.rest.domain.account.AccountDao;
+import com.github.dwendelen.platformd.rest.domain.account.Transaction;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,39 +16,40 @@ import java.util.UUID;
 @RequestMapping(value = "/api/accounts")
 public class AccountController {
     @Autowired
-    private ReadAccountDao readAccountDao;
+    private AccountDao accountDao;
     @Autowired
     private CommandGateway commandGateway;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<ReadAccount> getAccounts() {
-        return readAccountDao.getAccounts();
+    public List<Account> getAccounts() {
+        return accountDao.getAccounts();
     }
 
     @RequestMapping(value = "/{account}/transactions", method = RequestMethod.GET)
-    public List<ReadTransaction> getTransactions(@PathVariable("account") UUID accountUuid) {
-        return readAccountDao.getTransactions(accountUuid);
+    public List<Transaction> getTransactions(@PathVariable("account") UUID accountUuid) {
+        return accountDao.getTransactions(accountUuid);
     }
 
     @RequestMapping(value = "/{account}/transactions", method = RequestMethod.POST)
-public void  createTransaction(@PathVariable("account") UUID accountUuid,
-                                         @RequestBody ReadTransaction readTransaction) {
+    public void  createTransaction(@PathVariable("account") UUID accountUuid,
+                                   @RequestBody Transaction readTransaction) {
         MakeMoney makeMoney = new MakeMoney()
                 .setAccountId(accountUuid)
+                .setTransactionDate(readTransaction.getTimestamp())
                 .setAmount(readTransaction.getAmount())
-                .setComment(readTransaction.getComment())
-                .setTransactionDate(readTransaction.getTimestamp());
+                .setIncomeSource(readTransaction.getBudgetItem())
+                .setComment(readTransaction.getComment());
         commandGateway.sendAndWait(makeMoney);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ReadAccount createAccount(@RequestBody CreateAccount createAccount) {
+    public Account createAccount(@RequestBody CreateAccount createAccount) {
         CreateNormalAccount createNormalAccount = new CreateNormalAccount()
                 .setName(createAccount.name);
 
         UUID uuid = commandGateway.sendAndWait(createNormalAccount);
-        return readAccountDao.getAccount(uuid);
+        return accountDao.getAccount(uuid);
     }
 
     @RequestMapping(value = "/{account}", method = RequestMethod.DELETE)

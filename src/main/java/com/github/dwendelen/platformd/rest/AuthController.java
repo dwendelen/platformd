@@ -1,7 +1,7 @@
 package com.github.dwendelen.platformd.rest;
 
-import com.github.dwendelen.platformd.core.user.User;
-import com.github.dwendelen.platformd.core.user.UserDao;
+import com.github.dwendelen.platformd.rest.domain.user.User;
+import com.github.dwendelen.platformd.rest.domain.user.UserDao;
 import com.github.dwendelen.platformd.infrastructure.authentication.GoogleTokenService;
 import com.github.dwendelen.platformd.infrastructure.authentication.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;

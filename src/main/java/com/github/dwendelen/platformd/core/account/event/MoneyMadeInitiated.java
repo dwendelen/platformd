@@ -1,26 +1,17 @@
-package com.github.dwendelen.platformd.core.account.command;
+package com.github.dwendelen.platformd.core.account.event;
 
-import com.datastax.driver.core.utils.UUIDs;
-import com.github.dwendelen.platformd.core.validation.ValidAmount;
-import com.github.dwendelen.platformd.core.validation.ValidInstant;
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-public class MakeMoney {
+public class MoneyMadeInitiated {
     @TargetAggregateIdentifier
-    @NotNull
     private UUID accountId;
-    @NotNull
-    private UUID transactionId = UUIDs.timeBased();
-    @ValidInstant
+    private UUID transactionId;
     private Instant transactionDate;
-    @ValidAmount
     private BigDecimal amount;
-    @NotNull
     private UUID incomeSource;
     private String comment;
 
@@ -28,7 +19,7 @@ public class MakeMoney {
         return accountId;
     }
 
-    public MakeMoney setAccountId(UUID accountId) {
+    public MoneyMadeInitiated setAccountId(UUID accountId) {
         this.accountId = accountId;
         return this;
     }
@@ -37,17 +28,8 @@ public class MakeMoney {
         return transactionId;
     }
 
-    public MakeMoney setTransactionId(UUID transactionId) {
+    public MoneyMadeInitiated setTransactionId(UUID transactionId) {
         this.transactionId = transactionId;
-        return this;
-    }
-
-    public Instant getTransactionDate() {
-        return transactionDate;
-    }
-
-    public MakeMoney setTransactionDate(Instant transactionDate) {
-        this.transactionDate = transactionDate;
         return this;
     }
 
@@ -55,7 +37,7 @@ public class MakeMoney {
         return amount;
     }
 
-    public MakeMoney setAmount(BigDecimal amount) {
+    public MoneyMadeInitiated setAmount(BigDecimal amount) {
         this.amount = amount;
         return this;
     }
@@ -64,7 +46,7 @@ public class MakeMoney {
         return incomeSource;
     }
 
-    public MakeMoney setIncomeSource(UUID incomeSource) {
+    public MoneyMadeInitiated setIncomeSource(UUID incomeSource) {
         this.incomeSource = incomeSource;
         return this;
     }
@@ -73,8 +55,17 @@ public class MakeMoney {
         return comment;
     }
 
-    public MakeMoney setComment(String comment) {
+    public MoneyMadeInitiated setComment(String comment) {
         this.comment = comment;
+        return this;
+    }
+
+    public Instant getTransactionDate() {
+        return transactionDate;
+    }
+
+    public MoneyMadeInitiated setTransactionDate(Instant transactionDate) {
+        this.transactionDate = transactionDate;
         return this;
     }
 }

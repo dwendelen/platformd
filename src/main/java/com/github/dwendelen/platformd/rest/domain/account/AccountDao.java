@@ -1,4 +1,4 @@
-package com.github.dwendelen.platformd.read;
+package com.github.dwendelen.platformd.rest.domain.account;
 
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
@@ -18,50 +18,50 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class ReadAccountDao {
-    private final Mapper<ReadAccount> accountMapper;
-    private final Mapper<ReadTransaction> transactionMapper;
+public class AccountDao {
+    private final Mapper<Account> accountMapper;
+    private final Mapper<Transaction> transactionMapper;
     private AccountAccessor accountAccessor;
 
     @Autowired
-    public ReadAccountDao(MappingManager mappingManager) {
-        this.accountMapper = mappingManager.mapper(ReadAccount.class);
-        this.transactionMapper = mappingManager.mapper(ReadTransaction.class);
+    public AccountDao(MappingManager mappingManager) {
+        this.accountMapper = mappingManager.mapper(Account.class);
+        this.transactionMapper = mappingManager.mapper(Transaction.class);
         this.accountAccessor = mappingManager.createAccessor(AccountAccessor.class);
     }
 
-    public List<ReadAccount> getAccounts() {
+    public List<Account> getAccounts() {
         return accountAccessor.getAllAccounts().all();
     }
 
-    public ReadAccount getAccount(UUID uuid) {
+    public Account getAccount(UUID uuid) {
         return accountMapper.get(uuid);
     }
 
     @EventHandler
     public void on(NormalAccountCreated normalAccountCreated) {
-        ReadAccount newAccount = new ReadAccount()
+        Account newAccount = new Account()
                 .setUuid(normalAccountCreated.uuid)
                 .setName(normalAccountCreated.name)
                 .setBalance(BigDecimal.ZERO);
         accountMapper.save(newAccount);
     }
 
-    public List<ReadTransaction> getTransactions(UUID account) {
+    public List<Transaction> getTransactions(UUID account) {
         return accountAccessor.getAllTransactions(account).all().stream()
                 .filter(t -> t.getTransactionUuid() != null)
                 .collect(Collectors.toList());
     }
 
     @EventHandler
-    public void on(MoneyMade moneyMade) {
-        ReadTransaction newTransaction = new ReadTransaction()
-                .setAccountUuid(moneyMade.getAccountId())
-                .setTransactionUuid(moneyMade.getTransactionId())
-                .setTimestamp(moneyMade.getTransactionDate())
-                .setAmount(moneyMade.getAmount())
-                .setComment(moneyMade.getComment())
-                .setAccountBalance(moneyMade.getNewBalance());
+    public void on(MoneyMade event) {
+        Transaction newTransaction = new Transaction()
+                .setAccountId(event.getAccountId())
+                .setTransactionUuid(event.getTransactionId())
+                .setTimestamp(event.getTransactionDate())
+                .setAmount(event.getAmount())
+                .setComment(event.getComment())
+                .setAccountBalance(event.getNewBalance());
 
         transactionMapper.save(newTransaction);
     }
@@ -69,9 +69,9 @@ public class ReadAccountDao {
     @Accessor
     public interface AccountAccessor {
         @Query("SELECT DISTINCT account_uuid, account_name, balance FROM account")
-        Result<ReadAccount> getAllAccounts();
+        Result<Account> getAllAccounts();
 
         @Query("SELECT * FROM account WHERE account_uuid=:arg0")
-        Result<ReadTransaction> getAllTransactions(UUID account);
+        Result<Transaction> getAllTransactions(UUID account);
     }
 }

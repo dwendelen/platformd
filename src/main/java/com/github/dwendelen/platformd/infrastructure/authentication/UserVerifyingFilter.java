@@ -1,6 +1,6 @@
 package com.github.dwendelen.platformd.infrastructure.authentication;
 
-import com.github.dwendelen.platformd.core.user.User;
+import com.github.dwendelen.platformd.rest.domain.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

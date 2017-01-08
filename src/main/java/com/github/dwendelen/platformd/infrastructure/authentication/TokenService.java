@@ -1,13 +1,10 @@
 package com.github.dwendelen.platformd.infrastructure.authentication;
 
-import com.github.dwendelen.platformd.core.user.User;
-import com.github.dwendelen.platformd.core.user.UserDao;
+import com.github.dwendelen.platformd.rest.domain.user.User;
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.UUID;

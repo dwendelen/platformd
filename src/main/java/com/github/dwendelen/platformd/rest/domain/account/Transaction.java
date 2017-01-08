@@ -1,4 +1,4 @@
-package com.github.dwendelen.platformd.read;
+package com.github.dwendelen.platformd.rest.domain.account;
 
 
 import com.datastax.driver.mapping.annotations.ClusteringColumn;
@@ -12,16 +12,18 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Table(name = "account")
-public class ReadTransaction {
+public class Transaction {
     @PartitionKey
     @Column(name = "account_uuid")
-    private UUID accountUuid;
+    private UUID accountId;
     @ClusteringColumn(0)
     @Column(name = "transaction_time")
     private Instant timestamp;
     @ClusteringColumn(1)
     @Column(name="transaction_uuid")
     private UUID transactionUuid;
+    @Column(name = "budget_item")
+    private UUID budgetItem;
     @Column(name = "amount")
     private BigDecimal amount;
     @Column(name = "comment")
@@ -29,12 +31,12 @@ public class ReadTransaction {
     @Column(name = "balance")
     private BigDecimal accountBalance;
 
-    public UUID getAccountUuid() {
-        return accountUuid;
+    public UUID getAccountId() {
+        return accountId;
     }
 
-    public ReadTransaction setAccountUuid(UUID accountUuid) {
-        this.accountUuid = accountUuid;
+    public Transaction setAccountId(UUID accountId) {
+        this.accountId = accountId;
         return this;
     }
 
@@ -42,7 +44,7 @@ public class ReadTransaction {
         return amount;
     }
 
-    public ReadTransaction setAmount(BigDecimal amount) {
+    public Transaction setAmount(BigDecimal amount) {
         this.amount = amount;
         return this;
     }
@@ -51,8 +53,17 @@ public class ReadTransaction {
         return transactionUuid;
     }
 
-    public ReadTransaction setTransactionUuid(UUID transactionUuid) {
+    public Transaction setTransactionUuid(UUID transactionUuid) {
         this.transactionUuid = transactionUuid;
+        return this;
+    }
+
+    public UUID getBudgetItem() {
+        return budgetItem;
+    }
+
+    public Transaction setBudgetItem(UUID budgetItem) {
+        this.budgetItem = budgetItem;
         return this;
     }
 
@@ -60,7 +71,7 @@ public class ReadTransaction {
         return comment;
     }
 
-    public ReadTransaction setComment(String comment) {
+    public Transaction setComment(String comment) {
         this.comment = comment;
         return this;
     }
@@ -70,7 +81,7 @@ public class ReadTransaction {
         return timestamp;
     }
 
-    public ReadTransaction setTimestamp(Instant timestamp) {
+    public Transaction setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -79,7 +90,7 @@ public class ReadTransaction {
         return accountBalance;
     }
 
-    public ReadTransaction setAccountBalance(BigDecimal accountBalance) {
+    public Transaction setAccountBalance(BigDecimal accountBalance) {
         this.accountBalance = accountBalance;
         return this;
     }

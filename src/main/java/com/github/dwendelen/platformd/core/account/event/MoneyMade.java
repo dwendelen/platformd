@@ -1,16 +1,20 @@
 package com.github.dwendelen.platformd.core.account.event;
 
+import org.axonframework.commandhandling.TargetAggregateIdentifier;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 public class MoneyMade {
+    @TargetAggregateIdentifier
     private UUID accountId;
     private UUID transactionId;
     private Instant transactionDate;
     private BigDecimal amount;
-    private String comment;
     private BigDecimal newBalance;
+    private UUID incomeSource;
+    private String comment;
 
     public UUID getAccountId() {
         return accountId;
@@ -39,6 +43,24 @@ public class MoneyMade {
         return this;
     }
 
+    public BigDecimal getNewBalance() {
+        return newBalance;
+    }
+
+    public MoneyMade setNewBalance(BigDecimal newBalance) {
+        this.newBalance = newBalance;
+        return this;
+    }
+
+    public UUID getIncomeSource() {
+        return incomeSource;
+    }
+
+    public MoneyMade setIncomeSource(UUID incomeSource) {
+        this.incomeSource = incomeSource;
+        return this;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -54,15 +76,6 @@ public class MoneyMade {
 
     public MoneyMade setTransactionDate(Instant transactionDate) {
         this.transactionDate = transactionDate;
-        return this;
-    }
-
-    public BigDecimal getNewBalance() {
-        return newBalance;
-    }
-
-    public MoneyMade setNewBalance(BigDecimal newBalance) {
-        this.newBalance = newBalance;
         return this;
     }
 }
