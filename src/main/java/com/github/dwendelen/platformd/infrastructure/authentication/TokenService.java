@@ -23,9 +23,9 @@ public class TokenService {
         return Jwts.builder()
                 .setSubject(user.getUserId().toString())
                 .setId(UUID.randomUUID().toString())
+                .setIssuer("platformd")
                 .setIssuedAt(Date.from(iss))
                 .setExpiration(Date.from(exp))
-                .claim("name", "John Doe")
                 .claim("admin", user.isAdmin())
                 .signWith(SignatureAlgorithm.HS256, SECRET.getBytes())
                 .compact();
@@ -33,14 +33,23 @@ public class TokenService {
 
 
     public User parse(String token) {
-        Claims claims = Jwts.parser()
+        Jws<Claims> jws = Jwts.parser()
                 .setSigningKey(SECRET.getBytes())
-                .parseClaimsJws(token)
-                .getBody();
+                .requireIssuer("platformd")
+                .parseClaimsJws(token);
+
+        validateSigningAlgorithm(jws);
+        Claims claims = jws.getBody();
 
         return new User()
                 .setUserId(UUID.fromString(claims.getSubject()))
                 .setAdmin(claims.get("admin", Boolean.class));
 
+    }
+
+    private void validateSigningAlgorithm(Jws<Claims> jws) {
+        if(!jws.getHeader().getAlgorithm().equals(SignatureAlgorithm.HS256.getValue())) {
+            throw new IllegalArgumentException("Wrong signing algorithm");
+        }
     }
 }
