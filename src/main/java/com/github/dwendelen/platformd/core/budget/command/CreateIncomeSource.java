@@ -9,6 +9,8 @@ import java.util.UUID;
 public class CreateIncomeSource {
     @NotNull
     private UUID uuid = UUIDs.timeBased();
+    @NotNull
+    private UUID owner;
     @ValidName
     private String name;
 
@@ -18,6 +20,15 @@ public class CreateIncomeSource {
 
     public CreateIncomeSource setUuid(UUID uuid) {
         this.uuid = uuid;
+        return this;
+    }
+
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public CreateIncomeSource setOwner(UUID owner) {
+        this.owner = owner;
         return this;
     }
 

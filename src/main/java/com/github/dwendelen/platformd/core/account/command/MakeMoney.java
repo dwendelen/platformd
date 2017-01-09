@@ -2,12 +2,14 @@ package com.github.dwendelen.platformd.core.account.command;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.github.dwendelen.platformd.core.validation.ValidAmount;
+import com.github.dwendelen.platformd.core.validation.ValidDate;
 import com.github.dwendelen.platformd.core.validation.ValidInstant;
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class MakeMoney {
@@ -16,8 +18,8 @@ public class MakeMoney {
     private UUID accountId;
     @NotNull
     private UUID transactionId = UUIDs.timeBased();
-    @ValidInstant
-    private Instant transactionDate;
+    @ValidDate
+    private LocalDate transactionDate;
     @ValidAmount
     private BigDecimal amount;
     @NotNull
@@ -42,11 +44,11 @@ public class MakeMoney {
         return this;
     }
 
-    public Instant getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public MakeMoney setTransactionDate(Instant transactionDate) {
+    public MakeMoney setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
         return this;
     }

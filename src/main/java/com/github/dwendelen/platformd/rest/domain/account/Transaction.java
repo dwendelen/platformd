@@ -8,28 +8,26 @@ import com.datastax.driver.mapping.annotations.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
-@Table(name = "account")
+@Table(name = "transaction")
 public class Transaction {
     @PartitionKey
-    @Column(name = "account_uuid")
+    @Column(name = "account_id")
     private UUID accountId;
     @ClusteringColumn(0)
-    @Column(name = "transaction_time")
-    private Instant timestamp;
+    @Column(name = "transaction_date")
+    private LocalDate transactionDate;
     @ClusteringColumn(1)
-    @Column(name="transaction_uuid")
-    private UUID transactionUuid;
+    @Column(name="transaction_id")
+    private UUID transactionId;
     @Column(name = "budget_item")
     private UUID budgetItem;
     @Column(name = "amount")
     private BigDecimal amount;
     @Column(name = "comment")
     private String comment;
-    @Column(name = "balance")
-    private BigDecimal accountBalance;
 
     public UUID getAccountId() {
         return accountId;
@@ -49,12 +47,12 @@ public class Transaction {
         return this;
     }
 
-    public UUID getTransactionUuid() {
-        return transactionUuid;
+    public UUID getTransactionId() {
+        return transactionId;
     }
 
-    public Transaction setTransactionUuid(UUID transactionUuid) {
-        this.transactionUuid = transactionUuid;
+    public Transaction setTransactionId(UUID transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 
@@ -77,21 +75,12 @@ public class Transaction {
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    public Instant getTimestamp() {
-        return timestamp;
+    public LocalDate getTransactionDate() {
+        return transactionDate;
     }
 
-    public Transaction setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-        return this;
-    }
-
-    public BigDecimal getAccountBalance() {
-        return accountBalance;
-    }
-
-    public Transaction setAccountBalance(BigDecimal accountBalance) {
-        this.accountBalance = accountBalance;
+    public Transaction setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
         return this;
     }
 }

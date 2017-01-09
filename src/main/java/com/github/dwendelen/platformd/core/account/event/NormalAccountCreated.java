@@ -10,4 +10,5 @@ public class NormalAccountCreated {
     @TargetAggregateIdentifier
     public UUID uuid;
     public String name;
+    public UUID owner;
 }

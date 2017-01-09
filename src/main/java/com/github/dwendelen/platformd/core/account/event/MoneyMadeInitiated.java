@@ -4,13 +4,15 @@ import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class MoneyMadeInitiated {
     @TargetAggregateIdentifier
     private UUID accountId;
     private UUID transactionId;
-    private Instant transactionDate;
+    private LocalDate transactionDate;
     private BigDecimal amount;
     private UUID incomeSource;
     private String comment;
@@ -60,11 +62,11 @@ public class MoneyMadeInitiated {
         return this;
     }
 
-    public Instant getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public MoneyMadeInitiated setTransactionDate(Instant transactionDate) {
+    public MoneyMadeInitiated setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
         return this;
     }

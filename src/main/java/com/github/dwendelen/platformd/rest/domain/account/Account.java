@@ -1,5 +1,6 @@
 package com.github.dwendelen.platformd.rest.domain.account;
 
+import com.datastax.driver.mapping.annotations.ClusteringColumn;
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
@@ -11,8 +12,12 @@ import java.util.UUID;
 @Table(name = "account")
 public class Account {
     @PartitionKey
-    @Column(name = "account_uuid")
-    private UUID uuid;
+    @Column(name = "user_id")
+    private UUID userId;
+
+    @ClusteringColumn
+    @Column(name = "account_id")
+    private UUID accountId;
 
     @Column(name = "account_name")
     private String name;
@@ -20,12 +25,21 @@ public class Account {
     @Column(name = "balance")
     private BigDecimal balance;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public Account setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public Account setUserId(UUID userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public UUID getAccountId() {
+        return accountId;
+    }
+
+    public Account setAccountId(UUID accountId) {
+        this.accountId = accountId;
         return this;
     }
 

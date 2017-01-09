@@ -1,7 +1,7 @@
 server:
   port: 8443
   ssl:
-    key-store: classpath:ssl.p12
-    key-store-password: forgiveMeForIHaveSinned
+    key-store: platformd.p12
+    key-store-password: Screw you! Add via command line
     keyStoreType: PKCS12
-    keyAlias: localhost
+    keyAlias: platformd.se

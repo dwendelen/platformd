@@ -2,11 +2,12 @@ package com.github.dwendelen.platformd.core.account;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class Transaction {
     private UUID destination;
-    private Instant transactionDate;
+    private LocalDate transactionDate;
     private BigDecimal amount;
     private String comment;
 
@@ -19,11 +20,11 @@ public class Transaction {
         return this;
     }
 
-    public Instant getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public Transaction setTransactionDate(Instant transactionDate) {
+    public Transaction setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
         return this;
     }

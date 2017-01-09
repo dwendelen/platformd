@@ -35,6 +35,7 @@ public class NormalAccount {
         NormalAccountCreated normalAccountCreated = new NormalAccountCreated();
         normalAccountCreated.uuid = command.getUuid();
         normalAccountCreated.name = command.getName();
+        normalAccountCreated.owner = command.getOwner();
 
         apply(normalAccountCreated);
     }

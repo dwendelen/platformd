@@ -1,5 +1,6 @@
 package com.github.dwendelen.platformd.core.account.command;
 
+import com.datastax.driver.core.utils.UUIDs;
 import com.github.dwendelen.platformd.core.validation.ValidAmount;
 import com.github.dwendelen.platformd.core.validation.ValidName;
 import org.hibernate.validator.constraints.NotBlank;
@@ -12,7 +13,9 @@ import java.util.UUID;
 
 public class CreateNormalAccount {
     @NotNull
-    private UUID uuid = UUID.randomUUID();
+    private UUID uuid = UUIDs.timeBased();
+    @NotNull
+    private UUID owner;
     @ValidName
     private String name;
 
@@ -22,6 +25,15 @@ public class CreateNormalAccount {
 
     public CreateNormalAccount setUuid(UUID uuid) {
         this.uuid = uuid;
+        return this;
+    }
+
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public CreateNormalAccount setOwner(UUID owner) {
+        this.owner = owner;
         return this;
     }
 

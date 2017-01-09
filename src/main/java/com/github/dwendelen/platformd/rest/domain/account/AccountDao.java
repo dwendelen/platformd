@@ -7,6 +7,7 @@ import com.datastax.driver.mapping.annotations.Accessor;
 import com.datastax.driver.mapping.annotations.Query;
 import com.github.dwendelen.platformd.core.account.event.MoneyMade;
 import com.github.dwendelen.platformd.core.account.event.NormalAccountCreated;
+import com.github.dwendelen.platformd.infrastructure.authentication.IdentityProvider;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,64 +15,85 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
+/*
+CREATE TABLE account (
+	user_id timeuuid,
+	account_id timeuuid,
+	account_name text,
+	balance decimal,
+	primary key (user_id, account_id)
+);
 
+CREATE TABLE transaction (
+	account_id timeuuid,
+	transaction_date date,
+	transaction_id timeuuid,
+	amount decimal,
+    budget_item timeuuid,
+	comment text,
+	primary key (account_id, transaction_date, transaction_id)
+) WITH CLUSTERING ORDER BY (transaction_date DESC, transaction_id DESC);
+
+ */
 @Component
 public class AccountDao {
     private final Mapper<Account> accountMapper;
     private final Mapper<Transaction> transactionMapper;
     private AccountAccessor accountAccessor;
+    private IdentityProvider identityProvider;
 
     @Autowired
-    public AccountDao(MappingManager mappingManager) {
+    public AccountDao(MappingManager mappingManager, IdentityProvider identityProvider) {
         this.accountMapper = mappingManager.mapper(Account.class);
         this.transactionMapper = mappingManager.mapper(Transaction.class);
         this.accountAccessor = mappingManager.createAccessor(AccountAccessor.class);
+        this.identityProvider = identityProvider;
     }
 
-    public List<Account> getAccounts() {
-        return accountAccessor.getAllAccounts().all();
+    public List<Account> getAccounts(UUID userId) {
+        return accountAccessor.getAccounts(userId).all();
     }
 
-    public Account getAccount(UUID uuid) {
-        return accountMapper.get(uuid);
+    public Account getAccount(UUID userId, UUID uuid) {
+        return accountMapper.get(userId, uuid);
     }
 
     @EventHandler
     public void on(NormalAccountCreated normalAccountCreated) {
         Account newAccount = new Account()
-                .setUuid(normalAccountCreated.uuid)
+                .setUserId(normalAccountCreated.owner)
+                .setAccountId(normalAccountCreated.uuid)
                 .setName(normalAccountCreated.name)
                 .setBalance(BigDecimal.ZERO);
         accountMapper.save(newAccount);
     }
 
     public List<Transaction> getTransactions(UUID account) {
-        return accountAccessor.getAllTransactions(account).all().stream()
-                .filter(t -> t.getTransactionUuid() != null)
-                .collect(Collectors.toList());
+        return accountAccessor.getTransactions(account).all();
     }
 
     @EventHandler
     public void on(MoneyMade event) {
+        Account account = accountMapper.get(identityProvider.getCurrentUser().getUserId(),event.getAccountId());
+        account.setBalance(event.getNewBalance());
+        accountMapper.save(account);
+
         Transaction newTransaction = new Transaction()
                 .setAccountId(event.getAccountId())
-                .setTransactionUuid(event.getTransactionId())
-                .setTimestamp(event.getTransactionDate())
+                .setTransactionId(event.getTransactionId())
+                .setTransactionDate(event.getTransactionDate())
                 .setAmount(event.getAmount())
-                .setComment(event.getComment())
-                .setAccountBalance(event.getNewBalance());
-
+                .setComment(event.getComment());
         transactionMapper.save(newTransaction);
     }
 
     @Accessor
-    public interface AccountAccessor {
-        @Query("SELECT DISTINCT account_uuid, account_name, balance FROM account")
-        Result<Account> getAllAccounts();
+    private interface AccountAccessor {
+        @Query("SELECT * FROM transaction WHERE account_id=:arg0")
+        Result<Transaction> getTransactions(UUID accountId);
 
-        @Query("SELECT * FROM account WHERE account_uuid=:arg0")
-        Result<Transaction> getAllTransactions(UUID account);
+        @Query("SELECT * FROM account WHERE user_id=:arg0")
+        Result<Account> getAccounts(UUID userId);
     }
 }

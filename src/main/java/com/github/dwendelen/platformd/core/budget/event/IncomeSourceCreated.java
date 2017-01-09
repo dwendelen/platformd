@@ -8,6 +8,7 @@ import java.util.UUID;
 public class IncomeSourceCreated {
     @TargetAggregateIdentifier
     private UUID uuid;
+    private UUID owner;
     private String name;
 
     public UUID getUuid() {
@@ -16,6 +17,15 @@ public class IncomeSourceCreated {
 
     public IncomeSourceCreated setUuid(UUID uuid) {
         this.uuid = uuid;
+        return this;
+    }
+
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public IncomeSourceCreated setOwner(UUID owner) {
+        this.owner = owner;
         return this;
     }
 

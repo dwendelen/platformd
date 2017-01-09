@@ -13,7 +13,14 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
 
-
+/*
+CREATE TABLE income_source (
+    user_id timeuuid,
+    income_source_id timeuuid,
+    name text,
+    primary key (user_id, income_source_id)
+);
+ */
 @Component
 public class BudgetDao {
     private IncomeSourceAccessor incomeSourceAccessor;
@@ -25,25 +32,26 @@ public class BudgetDao {
         incomeSourceAccessor = mappingManager.createAccessor(IncomeSourceAccessor.class);
     }
 
-    public List<IncomeSource> getAll() {
-        return incomeSourceAccessor.getAllTransactions().all();
+    public List<IncomeSource> getAll(UUID userId) {
+        return incomeSourceAccessor.getAllTransactions(userId).all();
     }
 
-    public IncomeSource getIncomeSource(UUID uuid) {
-        return incomeSourceMapper.get(uuid);
+    public IncomeSource getIncomeSource(UUID userId, UUID uuid) {
+        return incomeSourceMapper.get(userId, uuid);
     }
 
     @EventHandler
     public void on(IncomeSourceCreated event) {
         incomeSourceMapper.save(new IncomeSource()
-            .setUuid(event.getUuid())
-            .setName(event.getName())
+                .setUserId(event.getOwner())
+                .setUuid(event.getUuid())
+                .setName(event.getName())
         );
     }
 
     @Accessor
     public interface IncomeSourceAccessor {
-        @Query("SELECT * FROM income_source")
-        Result<IncomeSource> getAllTransactions();
+        @Query("SELECT * FROM income_source WHERE user_id=:arg0")
+        Result<IncomeSource> getAllTransactions(UUID userId);
     }
 }

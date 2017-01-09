@@ -27,6 +27,7 @@ public class IncomeSource {
         apply(new IncomeSourceCreated()
                 .setUuid(command.getUuid())
                 .setName(command.getName())
+                .setOwner(command.getOwner())
         );
     }
 

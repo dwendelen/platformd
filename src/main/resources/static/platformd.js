@@ -11,6 +11,9 @@ app.service('loginService', function ($http, tokenHolder) {
             onSucces();
         }
     };
+    this.getUserId = function () {
+        return self.user.userId;
+    };
     this.logout = function () {
         delete tokenHolder.token;
         delete self.user;
@@ -33,10 +36,10 @@ app.service('headerInserter', function (tokenHolder) {
     this.request = addTokenToConfig;
 });
 app.factory('Account', function ($resource) {
-    return $resource("/api/accounts");
+    return $resource("/api/users/:userId/accounts", {userId: '@userId'});
 });
 app.factory('Budget', function ($resource) {
-    return $resource("/api/budget");
+    return $resource("/api/users/:userId/budget", {userId: '@userId'});
 });
 app.factory('Transaction', function ($resource) {
     return $resource("/api/accounts/:accountId/transactions", {accountId: '@accountId'});
@@ -51,10 +54,10 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
         self.loggedIn = true;
         loadAccounts();
 
-        self.budgetItems = Budget.query();
+        self.budgetItems = Budget.query({userId: loginService.getUserId()});
     }
     function loadAccounts() {
-        self.accounts = Account.query();
+        self.accounts = Account.query({userId: loginService.getUserId()});
     }
 
     this.logout = function() {
@@ -68,6 +71,8 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
     this.createAccount = function (name) {
         var newAccount = new Account();
         newAccount.name = name;
+        newAccount.userId = loginService.getUserId();
+        newAccount.balance = 0;
         newAccount.$save(function (newAcc) {
             self.accounts.push(newAcc);
         });
@@ -75,19 +80,20 @@ app.controller('controller', function ($scope, loginService, Account, Budget, Tr
     this.createBudget = function (name) {
         var budget = new Budget();
         budget.name = name;
+        budget.userId = loginService.getUserId();
         budget.$save(function (newBudget) {
            self.budgetItems.push(newBudget);
         });
     };
     this.clickedOnAccount = function(account) {
         if(account.transactions === undefined) {
-            account.transactions = Transaction.query({accountId: account.uuid});
+            account.transactions = Transaction.query({accountId: account.accountId});
         }
         account.showTransactions = !account.showTransactions;
     };
     this.addTransaction = function(account, timestamp, amount, comment, budgetItem) {
-        var trans = new Transaction({accountId: account.uuid});
-        trans.timestamp = timestamp;
+        var trans = new Transaction({accountId: account.accountId});
+        trans.transactionDate = timestamp;
         trans.amount = amount;
         trans.comment = comment;
         trans.budgetItem = budgetItem;
