@@ -2,18 +2,9 @@ package com.github.dwendelen.platformd.infrastructure.impl
 
 import java.util.UUID
 
-import com.datastax.driver.core.Session
 import com.github.dwendelen.platformd.infrastructure.cqrs._
-import com.github.dwendelen.platformd.infrastructure.axon.CassandraEventStoreEngine
-import com.github.dwendelen.platformd.infrastructure.cassandra.CassandraEventStore
-import com.github.dwendelen.platformd.infrastructure.cqrs.impl.EventWrapper
-import org.axonframework.commandhandling.CommandHandler
-import org.axonframework.eventsourcing.GenericDomainEventMessage
-import org.springframework.beans.factory.annotation.Autowired
+import com.github.dwendelen.platformd.infrastructure.cqrs.impl.{CassandraEventStore, EventWrapper}
 import org.springframework.stereotype.Component
-import rx.lang.scala.Observable
-
-import scala.reflect.ClassTag
 
 @Component
 class DefaultCQRS(cassandraEventStore: CassandraEventStore) extends CQRS {

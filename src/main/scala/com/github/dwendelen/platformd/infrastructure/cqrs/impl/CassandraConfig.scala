@@ -1,15 +1,12 @@
-package com.github.dwendelen.platformd.infrastructure.cassandra
+package com.github.dwendelen.platformd.infrastructure.cqrs.impl
 
 import java.nio.ByteBuffer
-import java.util.concurrent.{Executor, Executors, ThreadPoolExecutor}
+import java.util.concurrent.{Executor, Executors}
 
 import com.datastax.driver.core._
-import com.datastax.driver.extras.codecs.jdk8.InstantCodec
-import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec
-import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec
+import com.datastax.driver.extras.codecs.jdk8.{InstantCodec, LocalDateCodec, LocalTimeCodec}
 import com.datastax.driver.mapping.MappingManager
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.{Bean, Configuration}
 
 @Configuration
 class CassandraConfig {

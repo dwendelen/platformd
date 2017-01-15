@@ -1,24 +1,20 @@
-package com.github.dwendelen.platformd.infrastructure.cassandra
+package com.github.dwendelen.platformd.infrastructure.cqrs.impl
 
 import java.util.UUID
 import java.util.concurrent.Executor
-import java.lang.Iterable
 
-import com.datastax.driver.core.{querybuilder, _}
+import com.datastax.driver.core._
 import com.datastax.driver.core.querybuilder.QueryBuilder
-import com.datastax.driver.mapping.{Mapper, MappingManager, Result}
 import com.datastax.driver.mapping.annotations.{ClusteringColumn, Column, PartitionKey, Table}
+import com.datastax.driver.mapping.{Mapper, MappingManager, Result}
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import com.github.dwendelen.platformd.core.account.{NormalAccount, RejectMoneyMade}
+import com.github.dwendelen.platformd.core.account.RejectMoneyMade
 import com.github.dwendelen.platformd.infrastructure.cqrs.Aggregate
-import com.github.dwendelen.platformd.infrastructure.cqrs.impl.EventWrapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
-import rx.Completable
 import rx.lang.scala.Observable
-import rx.observable.ListenableFutureObservable
 
 import scala.annotation.meta.field
 import scala.beans.BeanProperty

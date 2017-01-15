@@ -33,11 +33,11 @@ class BudgetDao( mappingManager: MappingManager, cqrs: CQRS) extends Listener {
         incomeSourceMapper.get(userId, uuid)
 
     def on(event: IncomeSourceCreated) {
-        incomeSourceMapper.save(new IncomeSource()
-                .setUserId(event.owner)
-                .setUuid(event.uuid)
-                .setName(event.name)
-        )
+        incomeSourceMapper.save(new IncomeSource(
+            event.owner,
+            event.uuid,
+            event.name
+        ))
     }
 
     override def handle(event: Any): Unit = event match {
