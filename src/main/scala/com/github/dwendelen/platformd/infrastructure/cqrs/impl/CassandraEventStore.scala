@@ -119,15 +119,3 @@ class BucketWrapper[T](
                           val observable: Observable[T]
                       )
 
-object Play {
-    def main(args: Array[String]): Unit = {
-        val json = "{\"@class\":\"com.github.dwendelen.platformd.core.account.NormalAccountCreated\",\"uuid\":\"2032a120-daba-11e6-a3da-2dca6f65600d\",\"name\":\"u\",\"owner\":\"55afb5e0-d51f-11e6-ad89-19983f0483f2\"}"
-        val om = new ObjectMapper()
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY)
-        om.registerModule(DefaultScalaModule)
-        val clas = om.readValue(json, classOf[Any])
-
-        val s = om.writeValueAsString(new RejectMoneyMade(UUID.randomUUID(), UUID.randomUUID(), "hetkan"))
-        System.out.println(s)
-    }
-}

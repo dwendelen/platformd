@@ -1,7 +1,7 @@
 server:
   port: 8443
   ssl:
-    key-store: platformd.p12
-    key-store-password: Screw you! Add via command line
+    key-store: config/platformd.p12
+    key-store-password: Screw you! Add via command line/ in a properties file in the folder config
     keyStoreType: PKCS12
     keyAlias: platformd.se

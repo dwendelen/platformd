@@ -1,3 +1,10 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+}
+
 plugins {
     id "org.springframework.boot" version "1.4.3.RELEASE"
 }
@@ -7,8 +14,7 @@ group 'com.github.dwendelen'
 version '1'
 
 apply plugin: 'scala'
-
-sourceCompatibility = 1.8
+apply plugin: 'docker'
 
 repositories {
     mavenCentral()
@@ -45,4 +51,16 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.5.0'
 
     testCompile 'org.springframework:spring-test:4.3.5.RELEASE'
+}
+
+task buildDocker(type: Docker, dependsOn: bootRepackage) {
+    push = true
+    applicationName = jar.baseName
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }
