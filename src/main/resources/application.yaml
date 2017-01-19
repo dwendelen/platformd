@@ -1,3 +1,9 @@
+platformd:
+  token:
+    secret: "24n$#%oeoe843%5eo,ntour4/"
+  google:
+    clientId: "714940765820-4ronadar6r8rjgkn0lih986sgi14vl0o.apps.googleusercontent.com"
+
 server:
   port: 8443
   ssl:
