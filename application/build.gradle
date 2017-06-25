@@ -1,0 +1,79 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+}
+
+plugins {
+    id "org.springframework.boot" version "1.4.3.RELEASE"
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'scala'
+apply plugin: 'docker'
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.12.1'
+
+    compile 'org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE'
+
+    compile 'com.datastax.cassandra:cassandra-driver-core:3.1.2'
+    compile 'com.datastax.cassandra:cassandra-driver-mapping:3.1.2'
+    compile 'com.datastax.cassandra:cassandra-driver-extras:3.1.2'
+
+// https://mvnrepository.com/artifact/io.reactivex/rxscala_2.12
+    compile group: 'io.reactivex', name: 'rxscala_2.12', version: '0.26.5'
+
+
+    compile 'org.apache.kafka:kafka-clients:0.10.1.0'
+
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.5'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-scala_2.12
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-scala_2.12', version: '2.8.4'
+
+
+    compile 'com.google.api-client:google-api-client:1.22.0'
+
+    compile 'commons-validator:commons-validator:1.4.0'
+    compile 'io.jsonwebtoken:jjwt:0.6.0'
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.assertj:assertj-core:3.3.0'
+    //testCompile 'org.assertj:assertj-core-java8:3.3.0'
+    testCompile 'org.mockito:mockito-core:2.5.0'
+
+    testCompile 'org.springframework:spring-test:4.3.5.RELEASE'
+}
+
+task buildFrontend() {
+    dependsOn tasks.getByPath(':frontend:build')
+}
+
+task copyFrontend(type: Copy) {
+    from tasks.getByPath(':frontend:build').outputDir
+    into "${sourceSets.main.output.resourcesDir}/static"
+}
+
+copyFrontend.mustRunAfter buildFrontend
+
+task buildAndCopyFrontend() {
+    dependsOn buildFrontend
+    dependsOn copyFrontend
+}
+
+processResources {
+    dependsOn copyFrontend
+}
+
+task buildDocker(type: Docker, dependsOn: bootRepackage) {
+    push = true
+    applicationName = jar.baseName
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
+}

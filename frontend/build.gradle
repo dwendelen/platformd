@@ -1,0 +1,25 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'com.moowork.node'
+
+
+node {
+  download = true
+}
+
+task start(type: NpmTask) {
+  args = ["run", "start"]
+}
+
+task build(type: NpmTask) {
+  ext.outputDir = "${project.projectDir}/dist"
+  dependsOn npmInstall
+  args = ["run", "build"]
+}
+
+task watch(type: NpmTask) {
+  dependsOn npmInstall
+  args = ["run", "watch"]
+}

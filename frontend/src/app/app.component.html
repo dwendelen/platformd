@@ -1,0 +1,42 @@
+<div id="loginContainer">
+  <google-signin></google-signin>
+</div>
+<h1>Accounts</h1>
+<table>
+  <tr>
+    <td><input type="text" ng-model="name"> <button ng-click="ctrl.createAccount(name)">Add</button></td>
+  </tr>
+  <tr *ngFor="let account of accounts | async">
+    <td><a ng-click="ctrl.clickedOnAccount(account)">{{account.name}} {{account.balance}}</a><br>
+      <table ng-show="account.showTransactions">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Budget item</th>
+          <th>Amount</th>
+          <th>Comment</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tr>
+          <td><input type="text" ng-model="transactionDate" value="2017-01-07T18:10:19Z"></td>
+          <td>
+            <select ng-model="budgIt" >
+              <option ng-repeat="item in ctrl.budgetItems" value="{{item.uuid}}">{{item.name}}</option>
+            </select>
+          </td>
+          <td><input type="text" ng-model="amount"></td>
+          <td><input type="text" ng-model="comment"></td>
+          <td><button ng-click="ctrl.addTransaction(account, transactionDate, amount, comment, budgIt)">Add</button></td>
+        </tr>
+        <tr ng-repeat="transaction in account.transactions">
+          <td>{{transaction.transactionDate}}</td>
+          <td>TODO</td>
+          <td>{{transaction.amount}}</td>
+          <td>{{transaction.comment}}</td>
+          <td></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

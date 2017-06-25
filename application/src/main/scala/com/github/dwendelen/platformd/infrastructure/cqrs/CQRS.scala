@@ -10,3 +10,7 @@ trait CQRS {
 abstract sealed class CommandResult
 case class CommandSucces(result: Any) extends CommandResult
 case class CommandFailed(errors: List[String]) extends CommandResult
+
+abstract sealed class ApplyResult
+case class ApplySuccess() extends ApplyResult
+case class ApplyFailed(errors: List[String]) extends ApplyResult

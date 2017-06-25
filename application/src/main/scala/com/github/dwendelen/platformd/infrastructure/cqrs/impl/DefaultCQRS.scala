@@ -1,9 +1,8 @@
-package com.github.dwendelen.platformd.infrastructure.impl
+package com.github.dwendelen.platformd.infrastructure.cqrs.impl
 
 import java.util.UUID
 
 import com.github.dwendelen.platformd.infrastructure.cqrs._
-import com.github.dwendelen.platformd.infrastructure.cqrs.impl.{CassandraEventStore, EventWrapper}
 import org.springframework.stereotype.Component
 
 @Component

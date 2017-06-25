@@ -16,7 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * Created by xtrit on 12/01/17.
  */
-@Component
+//@Component
 public class A {
 @Autowired
 private KafkaConsumer<String, String> kafkaConsumer;
