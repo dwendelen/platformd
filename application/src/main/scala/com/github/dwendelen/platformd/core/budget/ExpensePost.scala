@@ -13,7 +13,7 @@ class ExpensePost(uuid: UUID) extends Aggregate[ExpensePost] {
         case _ => this
     }
 
-    def applyEvent(event: ExpensePost): ExpensePost =
+    def applyEvent(event: ExpensePostCreated): ExpensePost =
         new ExpensePost(event.uuid)
 
     override def handle(command: Any): AggregateResult = command match {

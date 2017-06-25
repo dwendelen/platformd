@@ -7,6 +7,9 @@ import "rxjs/add/operator/switchMap"
 import "rxjs/add/operator/map"
 import "rxjs/add/operator/do"
 import "rxjs/add/operator/share"
+import "rxjs/add/operator/delay"
+import "rxjs/observable/of"
+import {ArrayObservable} from "rxjs/observable/ArrayObservable";
 
 @Injectable()
 export class LoginService {
@@ -18,16 +21,23 @@ export class LoginService {
   constructor(
     private http: Http
   ) {
-    let loginObservable =
-
-
     this.loggedInObservable = this.loginSubject
       .switchMap(token => {
-        return this.http.post('api/auth/login', token)
+        if(token == null) {
+          return ArrayObservable.of(null);
+        }
+        console.log("replacing " + token + " with dummy");
+        //return this.http.post('api/auth/login', token)
+        return ArrayObservable.of<LoginResponse>({
+          userId: "myuserid",
+          name: "thisismyname",
+          token: "blotoken",
+          isAdmin: true
+        });
       })
-      .map(resp => resp.json() as LoginResponse)
+      //.map(resp => resp.json() as LoginResponse)
       .do(r => this.user = r)
-      .map(resp => resp.userId)
+      .map(resp => resp == null? null: resp.userId)
       .share();
 
       this.loggedInObservable.subscribe();
@@ -38,7 +48,7 @@ export class LoginService {
   }
 
   getUserId(): string {
-    return this.user.userId;
+    return this.user == null? null: this.user.userId;
   }
 
   getToken(): string {
@@ -46,16 +56,21 @@ export class LoginService {
   }
 
   logout(): void {
-    this.user = null;
+    this.loginSubject.next(null);
   }
 
   isLoggedIn(): boolean {
     return this.user !== null;
+  }
+
+  getName(): string {
+    return this.user == null? null: this.user.name;
   }
 }
 
 export class LoginResponse {
   userId: string;
   isAdmin: boolean;
-  token: string
+  token: string;
+  name: string;
 }

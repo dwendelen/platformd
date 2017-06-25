@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {LoginService} from "../login.service";
+import {LoginService} from "../login/login.service";
 import {Headers, Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 

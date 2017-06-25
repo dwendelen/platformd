@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {AuthenticatedHttp} from "../http/http.service";
+import {AuthenticatedHttp} from "../../http/http.service";
 import {Observable} from "rxjs/Observable";
 import {Account} from "./account"
 

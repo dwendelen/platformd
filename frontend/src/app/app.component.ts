@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginService} from "./login.service";
+import {LoginService} from "./login/login.service";
 import {Observable} from "rxjs/Observable";
-import {AccountService} from "./account/account.service";
+import {AccountService} from "./users/account/account.service";
 
 @Component({
   selector: 'app-root',
@@ -20,6 +20,14 @@ export class AppComponent implements OnInit {
     this.accounts = this.loginService.loggedInObservable
       .switchMap(user => this.accountService.getAccounts(user))
       .share()
+  }
+
+  loggedIn(): boolean {
+    return this.loginService.isLoggedIn();
+  }
+
+  getUserId(): string {
+    return this.loginService.getUserId();
   }
 }
 
