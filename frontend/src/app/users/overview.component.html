@@ -1,0 +1,7 @@
+<div #welcome class="col8">Welcome {{name}}</div>
+<div #accounts class="col4">
+    <h1>Accounts</h1>
+    <div *ngFor="let account of accountss | async">
+        <div class="col3">{{account.name}}</div><div class="col1">{{account.balance}}</div>
+    </div>
+</div>

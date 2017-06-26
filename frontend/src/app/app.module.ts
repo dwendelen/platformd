@@ -8,7 +8,7 @@ import {AccountService} from "./users/account/account.service";
 import {AuthenticatedHttp} from "./http/http.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {LoginComponent} from "./login/login.component";
-import {UserComponent} from "./users/user.component";
+import {OverviewComponent} from "./users/overview.component";
 import {LogoutComponent} from "./login/logout.component";
 import {GoogleSigninService} from "./login/google-signin.service";
 import {LoggedOutComponent} from "./login/loggedout.component";
@@ -24,7 +24,7 @@ import {LoggedOutComponent} from "./login/loggedout.component";
         LoginComponent,
         LogoutComponent,
         LoggedOutComponent,
-        UserComponent,
+        OverviewComponent,
     ],
     providers: [
         LoginService,

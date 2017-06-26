@@ -1,47 +1,70 @@
 /* You can add global styles to this file, and also import other style files */
 .header {
-  width: 1024px;
-  height: 200px;
+    width: 960px;
+    height: 50px;
 }
+
 .container {
-  width: 1024px;
+    width: 960px;
 }
-.container > div {
-  float: left;
-}
+
 .col1 {
-  width: 8.33%;
+    float: left;
+    width: 80px;
 }
+
 .col2 {
-  width: 16.66%;
+    float: left;
+    width: 160px;
 }
+
 .col3 {
-  width: 25%;
+    float: left;
+
+    width: 240px;
 }
+
 .col4 {
-  width: 33.33%;
+    float: left;
+    width: 320px;
 }
+
 .col5 {
-  width: 41.66%;
+    float: left;
+    width: 400px;
 }
+
 .col6 {
-  width: 50%;
+    float: left;
+    width: 480px;
 }
+
 .col7 {
-  width: 58.33%;
+    float: left;
+    width: 560px;
 }
+
 .col8 {
-  width: 66.66%;
+    float: left;
+    width: 640px;
 }
+
 .col9 {
-  width: 75%;
+    float: left;
+    width: 720px;
 }
+
 .col10 {
-  width: 83.33%;
+    float: left;
+    width: 800px;
 }
+
 .col11 {
-  width: 91.66%;
+    float: left;
+    width: 880px;
 }
+
 .col12 {
-  width: 100%;
+    float: left;
+    width: 960px;
 }

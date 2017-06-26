@@ -1,14 +1,14 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from "./login/login.component";
-import {UserComponent} from "./users/user.component";
+import {OverviewComponent} from "./users/overview.component";
 import {LoggedOutComponent} from "./login/loggedout.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login',  component: LoginComponent },
   { path: 'loggedout', component: LoggedOutComponent },
-  { path: 'users/:id', component: UserComponent },
+  { path: 'users/:id', component: OverviewComponent },
   //{ path: 'accounts/:id',  component: AccountComponent },
 ];
 
