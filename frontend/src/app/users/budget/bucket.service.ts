@@ -1,17 +1,17 @@
 import {Injectable} from "@angular/core";
 import {AuthenticatedHttp} from "../../http/http.service";
 import {Observable} from "rxjs/Observable";
-import {Account} from "./account";
 import "rxjs/add/observable/of";
+import {Bucket} from "./bucket";
 import {Summary} from "../summary/summary";
 
 
 @Injectable()
-export class AccountService {
+export class BucketService {
     constructor(private http: AuthenticatedHttp) {
     }
 
-    public getSummaries(userId: string): Observable<Summary<Account>[]> {
+    public getSummaries(userId: string): Observable<Summary<Bucket>[]> {
         /*return this.http.get(`/api/users/${userId}/accountss`)
          .map(resp => resp.json() as Account[])
          .map(accountss => {
@@ -23,30 +23,15 @@ export class AccountService {
          })*/
         return Observable.of([
             {
-                name: "Account 1",
+                name: "Bucket 1",
                 balance: 123456.79,
                 reference: Observable.of()
             },
             {
-                name: "Account 2",
+                name: "Bucket 2",
                 balance: 123.45,
                 reference: Observable.of()
-            },
-            {
-                name: "Negative",
-                balance: -123.45,
-                reference: Observable.of()
-            },
-            {
-                name: "Account with a very long name",
-                balance: 123456.79,
-                reference: Observable.of()
-            },
-            {
-                name: "Account with a very long name",
-                balance: 1.23,
-                reference: Observable.of()
-            },
+            }
         ]);
     }
 }

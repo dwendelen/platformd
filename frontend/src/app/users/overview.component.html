@@ -1,7 +1,13 @@
-<div #welcome class="col8">Welcome {{name}}</div>
-<div #accounts class="col4">
-    <h1>Accounts</h1>
-    <div *ngFor="let account of accountss | async">
-        <div class="col3">{{account.name}}</div><div class="col1">{{account.balance}}</div>
-    </div>
+<!--<div #welcome class="alpha grid_9">-->
+    <!--<h1 class="center">Welcome {{name}}</h1>-->
+<!--</div>-->
+<div #accounts class="alpha prefix_2 grid_6">
+    <h1 class="center no-top-margin">Accounts</h1>
+    <summary *ngFor="let account of accountss | async"
+             [item]="account"></summary>
+</div>
+<div #budget class="prefix_2 grid_6 suffix_2 omega">
+    <h1 class="center no-top-margin">Budget</h1>
+    <summary *ngFor="let budgetItem of budgetItems | async"
+             [item]="budgetItem"></summary>
 </div>

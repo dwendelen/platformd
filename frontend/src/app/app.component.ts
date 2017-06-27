@@ -2,38 +2,42 @@ import {Component, OnInit} from '@angular/core';
 import {LoginService} from "./login/login.service";
 import {Observable} from "rxjs/Observable";
 import {AccountService} from "./users/account/account.service";
+import {Summary} from "./users/summary/summary";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  accounts: Observable<Account[]>;
+    accountss: Observable<Summary<Account>[]>;
 
-  constructor(
-    private loginService: LoginService,
-    private accountService: AccountService
-  ) {}
+    constructor(private loginService: LoginService,
+                private accountService: AccountService) {
+    }
 
-  ngOnInit(): void {
-    this.accounts = this.loginService.loggedInObservable
-      .switchMap(user => this.accountService.getAccounts(user))
-      .share()
-  }
+    /*ngOnInit(): void {
+     this.accountss = this.loginService.loggedInObservable
+     .switchMap(user => this.accountService.getAccounts(user))
+     .share()
+     }*/
+    ngOnInit(): void {
+        let userId = this.loginService.getUserId();
+        this.accountss = this.accountService.getSummaries(userId);
+    }
 
-  loggedIn(): boolean {
-    return this.loginService.isLoggedIn();
-  }
+    loggedIn(): boolean {
+        return this.loginService.isLoggedIn();
+    }
 
-  getUserId(): string {
-    return this.loginService.getUserId();
-  }
+    getUserId(): string {
+        return this.loginService.getUserId();
+    }
 }
 
 
 /*
- app.controller('controller', function ($scope, loginService, Account, Budget, Transaction) {
+ app.controller('controller', function ($scope, loginService, Account, Bucket, Transaction) {
  var self = this;
 
  this.login = function (token) {
@@ -43,10 +47,10 @@ export class AppComponent implements OnInit {
  self.loggedIn = true;
  loadAccounts();
 
- self.budgetItems = Budget.query({userId: loginService.getUserId()});
+ self.budgetItems = Bucket.query({userId: loginService.getUserId()});
  }
  function loadAccounts() {
- self.accounts = Account.query({userId: loginService.getUserId()});
+ self.accountss = Account.query({userId: loginService.getUserId()});
  }
 
  this.logout = function() {
@@ -55,7 +59,7 @@ export class AppComponent implements OnInit {
  self.loggedIn = false;
 
  self.budgetItems = [];
- self.accounts = [];
+ self.accountss = [];
  };
  this.createAccount = function (name) {
  var newAccount = new Account();
@@ -63,11 +67,11 @@ export class AppComponent implements OnInit {
  newAccount.userId = loginService.getUserId();
  newAccount.balance = 0;
  newAccount.$save(function (newAcc) {
- self.accounts.push(newAcc);
+ self.accountss.push(newAcc);
  });
  };
  this.createBudget = function (name) {
- var budget = new Budget();
+ var budget = new Bucket();
  budget.name = name;
  budget.userId = loginService.getUserId();
  budget.$save(function (newBudget) {

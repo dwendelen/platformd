@@ -1,11 +1,15 @@
 <div class="header"></div>
-<div class="container">
-  <div #nav class="col4">
+<div class="container_24">
+  <div #nav class="grid_6">
+      <h1 class="no-top-margin">Menu</h1>
       <div><a *ngIf="!loggedIn()" class="navlink" routerLink="/login">Login</a></div>
       <div><a *ngIf="loggedIn()" class="navlink" [routerLink]="['/users', getUserId()]">Overview</a></div>
+
+      <summary *ngFor="let account of accountss | async" [item]="account"></summary>
+
       <div><logout *ngIf="loggedIn()"></logout></div>
   </div>
-  <div #content class="col8">
+  <div #content class="grid_18">
     <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,6 +1,5 @@
 export class Account {
-  userId: string;
-  accountId: string;
+  id: string;
   name: string;
   balance: number;
 }

@@ -12,6 +12,9 @@ import {OverviewComponent} from "./users/overview.component";
 import {LogoutComponent} from "./login/logout.component";
 import {GoogleSigninService} from "./login/google-signin.service";
 import {LoggedOutComponent} from "./login/loggedout.component";
+import {BucketService} from "./users/budget/bucket.service";
+import {SummaryComponent} from "./users/summary/summary.component";
+import {DetailsComponent} from "./users/details.component";
 
 @NgModule({
     imports: [
@@ -25,10 +28,13 @@ import {LoggedOutComponent} from "./login/loggedout.component";
         LogoutComponent,
         LoggedOutComponent,
         OverviewComponent,
+        SummaryComponent,
+        DetailsComponent
     ],
     providers: [
         LoginService,
         AccountService,
+        BucketService,
         AuthenticatedHttp,
         GoogleSigninService
     ],

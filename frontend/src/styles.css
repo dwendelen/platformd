@@ -1,70 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    font-family: Lato;
+    font-size: 12pt;
+    color: #1d1d1d;
+}
+
 .header {
-    width: 960px;
-    height: 50px;
+    height: 100px;
 }
 
-.container {
-    width: 960px;
-}
-
-.col1 {
-    float: left;
+.currency {
+    float:right;
+    text-align: right;
     width: 80px;
 }
-
-.col2 {
+.name {
     float: left;
-    width: 160px;
+    width: 140px;
+    height: 19px;
+    overflow: hidden;
 }
-
-.col3 {
-    float: left;
-
-    width: 240px;
+.center {
+    text-align: center;
 }
-
-.col4 {
-    float: left;
-    width: 320px;
+.no-top-margin {
+    margin-top: 0;
 }
-
-.col5 {
-    float: left;
-    width: 400px;
-}
-
-.col6 {
-    float: left;
-    width: 480px;
-}
-
-.col7 {
-    float: left;
-    width: 560px;
-}
-
-.col8 {
-    float: left;
-    width: 640px;
-}
-
-.col9 {
-    float: left;
-    width: 720px;
-}
-
-.col10 {
-    float: left;
-    width: 800px;
-}
-
-.col11 {
-    float: left;
-    width: 880px;
-}
-
-.col12 {
-    float: left;
-    width: 960px;
+.negative {
+    color: red;
+    font-weight: bold;
 }
