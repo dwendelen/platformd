@@ -3,8 +3,8 @@ import {LoginService} from "../login/login.service";
 import {AccountService} from "./account/account.service";
 import {Account} from "./account/account";
 import {Observable} from "rxjs/Observable";
-import {BucketService} from "./budget/bucket.service";
-import {Bucket} from "./budget/bucket";
+import {BucketService} from "./bucket/bucket.service";
+import {Bucket} from "./bucket/bucket";
 import {Summary} from "./summary/summary";
 
 @Component({

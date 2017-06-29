@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {Summary} from "@angular/compiler";
+import {Summary} from "./summary";
 
 @Component({
     selector: 'summary',

@@ -1,0 +1,18 @@
+<div class="alpha grid_16 omega">
+    <ng-container *ngFor="let item of transaction.items">
+        <div class="alpha grid_3">
+            {{item.date | date:'yyyy-MM-dd'}}
+        </div>
+        <div class="grid_4">
+            {{item.account}}
+        </div>
+
+        <div class="grid_6">
+            {{item.comment || '&nbsp;'}}
+        </div>
+
+        <div class="grid_3 omega currency">
+            {{item.amount}}
+        </div>
+    </ng-container>
+</div>

@@ -30,3 +30,11 @@ body {
     color: red;
     font-weight: bold;
 }
+.transactions > transaction > div {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-top: solid 1px;
+}
+.transactions > transaction:last-child > div {
+    border-bottom: solid 1px;
+}
