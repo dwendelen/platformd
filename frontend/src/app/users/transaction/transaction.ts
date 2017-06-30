@@ -1,4 +1,4 @@
-export interface Transaction {
+/*export interface Transaction {
 
 }
 
@@ -16,6 +16,13 @@ export class ComplexTransaction implements Transaction {
 }
 export class TransactionItem {
     id: number;
+    date: Date;
+    account: string;
+    comment: string;
+    amount: number;
+}*/
+
+export class Transaction {
     date: Date;
     account: string;
     comment: string;
