@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: Lato;
+    font-size: 12pt;
+    color: #1d1d1d;
+}
+
+.header {
+    height: 100px;
+}
+
+.currency {
+    float:right;
+    text-align: right;
+    width: 80px;
+}
+.name {
+    float: left;
+    width: 140px;
+    height: 19px;
+    overflow: hidden;
+}
+.center {
+    text-align: center;
+}
+.no-top-margin {
+    margin-top: 0;
+}
+.negative {
+    color: red;
+    font-weight: bold;
+}
+
+/*.transactions > div {*/
+    /*padding-top: 6px;*/
+    /*padding-bottom: 6px;*/
+    /*border-top: solid 1px;*/
+/*}*/
+/*.transactions > div:last-child  {*/
+    /*border-bottom: solid 1px;*/
+/*}*/

@@ -1,0 +1,36 @@
+{
+  "name": "frontend2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/gapi": "0.0.33",
+    "@types/jest": "^20.0.2",
+    "@types/node": "^8.0.7",
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1",
+    "@types/react-redux": "^4.4.45",
+    "@types/react-router": "^4.0.5",
+    "@types/react-router-dom": "^4.0.5",
+    "@types/react-router-redux": "^4.0.8",
+    "@types/redux": "^3.6.31",
+    "@types/redux-logger": "^3.0.0",
+    "moment": "^2.18.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-google-login": "^2.9.2",
+    "react-redux": "^4.4.8",
+    "react-router": "^4.0.5",
+    "react-router-dom": "^4.0.5",
+    "react-router-redux": "^4.0.8",
+    "react-scripts-ts": "2.3.2",
+    "redux": "^3.6.31",
+    "redux-logger": "^3.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  }
+}
