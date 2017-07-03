@@ -16,7 +16,7 @@ export class TransactionComp extends React.Component<TransactionCompProps, Trans
 
     renderSimple(transaction: SimpleTransaction): JSX.Element {
         return (
-            <div className="alpha grid_16 omega">
+            <div className="alpha grid_15 omega">
                 <div className="alpha grid_3">
                     {moment(transaction.date).format('YYYY-MM-DD')}
                 </div>
@@ -26,7 +26,7 @@ export class TransactionComp extends React.Component<TransactionCompProps, Trans
                 <div className="grid_6">
                     {transaction.comment || <div>&nbsp;</div>}
                 </div>
-                <div className="grid_3 omega currency">
+                <div className="grid_2 omega currency">
                     {transaction.amount}
                 </div>
             </div>
@@ -42,7 +42,7 @@ export class TransactionComp extends React.Component<TransactionCompProps, Trans
         let onClick = this.state.expanded ? () => this.collapse() : () => this.expand();
 
         return (
-            <div className="alpha grid_16 omega" onClick={onClick}>
+            <div className="alpha grid_15 omega" onClick={onClick}>
                 {this.renderHeaderComplex(transaction).concat(body)}
             </div>
         );
@@ -78,7 +78,7 @@ export class TransactionComp extends React.Component<TransactionCompProps, Trans
                 </div>
             ),
             (
-                <div className="grid_3 omega currency">
+                <div className="grid_2 omega currency">
                     {transaction.amount}
                 </div>
             )
@@ -103,7 +103,7 @@ export class TransactionComp extends React.Component<TransactionCompProps, Trans
                 </div>
             ),
             (
-                <div className="grid_3 suffix_1 omega currency">
+                <div className="grid_2 suffix_1 omega currency">
                     {item.amount}
                 </div>
             )

@@ -7,11 +7,11 @@ export class SummaryComp extends React.Component<SummaryProps, {}> {
         let name = this.props.summary.name;
 
         let className = balance < 0 ?
-            'currency negative' : 'currency';
+            'grid_2 omega currency negative' : 'grid_2 omega currency';
 
         return (
             <div className="alpha grid_6 omega">
-                <div className="name">{name}</div>
+                <div className="alpha grid_4 name">{name}</div>
                 <div className={className}>{balance}</div>
             </div>
         );

@@ -3,7 +3,7 @@ import {Summary} from '../summary';
 export const accounts: Summary[] = [
     {
         name: 'Account 1',
-        balance: 123456.79,
+        balance: 23456.79,
     },
     {
         name: 'Account 2',
@@ -15,7 +15,7 @@ export const accounts: Summary[] = [
     },
     {
         name: 'Account with a very long name',
-        balance: 123456.79,
+        balance: 23456.79,
     },
     {
         name: 'Account with a very long name',

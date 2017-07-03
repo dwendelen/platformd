@@ -13,13 +13,13 @@ class OverviewImpl extends React.Component<RouteComponentProps<PP> & DispatchPro
     render() {
         return (
             <div>
-                    <div id="accounts" className="alpha prefix_2 grid_6">
+                    <div id="accounts" className="alpha prefix_1 grid_6">
                         <h1 className="center no-top-margin">Accounts</h1>
                         {this.props.accounts.map(account =>
                             <SummaryComp summary={account}/>
                         )}
                     </div>
-                    <div id="budget" className="prefix_2 grid_6 suffix_2 omega">
+                    <div id="budget" className="prefix_1 grid_6 suffix_2 omega">
                         <h1 className="center no-top-margin">Buckets</h1>
                         {this.props.buckets.map(bucket =>
                             <SummaryComp summary={bucket}/>

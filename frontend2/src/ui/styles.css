@@ -10,15 +10,11 @@ body {
 }
 
 .currency {
-    float:right;
     text-align: right;
-    width: 80px;
 }
 .name {
-    float: left;
-    width: 140px;
-    height: 19px;
     overflow: hidden;
+    height: 19px;
 }
 .center {
     text-align: center;

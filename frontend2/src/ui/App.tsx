@@ -2,12 +2,14 @@ import * as React from 'react';
 import {SummaryComp} from './summary';
 import {BrowserRouter, Link} from 'react-router-dom';
 import {Route} from 'react-router';
-import {LoginComponent, logout} from './login/login';
+import {LoginComponent} from './login/login';
 import {AppState} from '../core/AppModel';
 import {connect, DispatchProp} from 'react-redux';
 import {Overview} from './overview';
 import {Details} from './details';
 import {Summary} from '../core/summary';
+import {Budget} from './budget';
+import {LogoutComponent} from './login/logout';
 
 interface AppProps {
     loggedIn: boolean;
@@ -29,10 +31,14 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
 
         let nav;
         if (this.props.loggedIn) {
-            nav = [<div><Link to={`/users/${this.props.userId}`} className="navlink">Overview</Link></div>]
+            nav = [
+                    <div><Link to={`/users/${this.props.userId}`} className="navlink">Overview</Link></div>,
+                    <div><Link to="/details" className="navlink">Details</Link></div>,
+                    <div><Link to="/budget" className="navlink">Budget</Link></div>
+                ]
                 .concat(accounts)
                 .concat([
-                    <div><a className="navlink" onClick={logout}>Logout</a></div>,
+                    <LogoutComponent />
                 ]);
         } else {
             nav = [<div><Link to="/login" className="navlink">Login</Link></div>];
@@ -47,11 +53,12 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
                             <h1 className="no-top-margin">Menu</h1>
                             {nav}
                         </div>
-                        <div id="content" className="grid_18">
+                        <div id="content" className="prefix_1 grid_17">
                             <Route exact={true} path="/" component={LoginComponent}/>
                             <Route exact={true} path="/login" component={LoginComponent}/>
                             <Route exact={true} path="/users/:userId" component={Overview}/>
                             <Route exact={true} path="/details" component={Details}/>
+                            <Route exact={true} path="/budget" component={Budget}/>
                         </div>
                     </div>
                 </div>
