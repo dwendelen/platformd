@@ -9,7 +9,7 @@ import {accounts} from './data/accounts';
 
 let initial: AppState = {
     loginState: {
-        loggedIn: true,
+        loggedIn: false,
         userId: null,
         token: null
     },
