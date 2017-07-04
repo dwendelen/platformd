@@ -50,11 +50,9 @@ export const transactions: Transaction[] = [
         amount: 23456.78
     },
     {
-        uuid: 'uuid2',
         date: new Date(2017, 4, 17),
         comment: 'Lets test complex',
         amount: 23456.78,
-        expanded: true,
         otherItems: [
             {
                 date: new Date(2017, 4, 17),
@@ -71,11 +69,9 @@ export const transactions: Transaction[] = [
         ]
     },
     {
-        uuid: 'uuid1',
         date: new Date(2017, 4, 17),
         comment: 'Lets test complex',
         amount: 23456.78,
-        expanded: true,
         otherItems: [
             {
                 date: new Date(2017, 4, 17),

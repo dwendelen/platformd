@@ -3,10 +3,12 @@ import {RouteComponentProps} from 'react-router';
 import {Transaction} from '../core/transaction';
 import {connect, DispatchProp} from 'react-redux';
 import {AppState} from '../core/AppModel';
-import {TransactionComp} from './transaction';
+import {TransactionComp} from './transaction/transaction';
+import {Summary} from '../core/summary';
 
 export class DetailsImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<any> & DetailsProps> {
     render() {
+        let summaries = this.props.buckets.concat(this.props.accounts);
         return (
             <div>
                 <div className="alpha grid_17 omega center">
@@ -23,17 +25,26 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
                         <TransactionComp transaction={transaction} />
                     )}
                 </div>
+                <datalist id="destinations">
+                    {summaries.map(s =>
+                        <option value={s.name}/>
+                    )}
+                </datalist>
             </div>
         );
     }
 }
 
 interface DetailsProps {
+    accounts: Summary[];
+    buckets: Summary[];
     transactions: Transaction[];
 }
 
 const mapStateToProps = (state: AppState, _: RouteComponentProps<{}>): DetailsProps => ({
-    transactions: state.accountDetails
+    transactions: state.accountDetails,
+    accounts: state.accountSummaries,
+    buckets: state.bucketSummaries
 });
 
 export const Details = connect(mapStateToProps)(DetailsImpl);

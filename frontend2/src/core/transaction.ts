@@ -6,11 +6,9 @@ export class SimpleTransaction {
 }
 
 export class ComplexTransaction {
-    uuid: string;
     date: Date;
     comment: string;
     amount: number;
-    expanded: boolean;
     otherItems: TransactionItem[];
 }
 

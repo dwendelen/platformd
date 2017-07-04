@@ -54,11 +54,11 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
                             {nav}
                         </div>
                         <div id="content" className="prefix_1 grid_17">
-                            <Route exact={true} path="/" component={LoginComponent}/>
-                            <Route exact={true} path="/login" component={LoginComponent}/>
-                            <Route exact={true} path="/users/:userId" component={Overview}/>
-                            <Route exact={true} path="/details" component={Details}/>
-                            <Route exact={true} path="/budget" component={Budget}/>
+                            <Route exact path="/" component={LoginComponent}/>
+                            <Route exact path="/login" component={LoginComponent}/>
+                            <Route exact path="/users/:userId" component={Overview}/>
+                            <Route exact path="/details" component={Details}/>
+                            <Route exact path="/budget" component={Budget}/>
                         </div>
                     </div>
                 </div>

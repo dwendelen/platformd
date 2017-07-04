@@ -27,6 +27,12 @@ body {
     font-weight: bold;
 }
 
+.transactions input {
+    width: 100%;
+    font-family: Lato;
+    font-size: 12pt;
+    color: #1d1d1d;
+}
 /*.transactions > div {*/
     /*padding-top: 6px;*/
     /*padding-bottom: 6px;*/
