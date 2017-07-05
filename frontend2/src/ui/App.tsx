@@ -25,23 +25,29 @@ const mapStateToProps = (state: AppState): AppProps => ({
 
 class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
     render(): JSX.Element {
-        let accounts = this.props.accounts.map(account =>
-            <SummaryComp summary={account}/>
+        let accounts = () => this.props.accounts.map(account =>
+            <SummaryComp key={account.uuid} summary={account}/>
         );
 
         let nav;
         if (this.props.loggedIn) {
-            nav = [
+            nav = (
+                <div id="nav" className="grid_6">
+                    <h1 className="no-top-margin">Menu</h1>
                     <div><Link to={`/users/${this.props.userId}`} className="navlink">Overview</Link></div>,
                     <div><Link to="/details" className="navlink">Details</Link></div>,
                     <div><Link to="/budget" className="navlink">Budget</Link></div>
-                ]
-                .concat(accounts)
-                .concat([
+                    {accounts()}
                     <LogoutComponent />
-                ]);
+                </div>
+            );
         } else {
-            nav = [<div><Link to="/login" className="navlink">Login</Link></div>];
+            nav = (
+                <div id="nav" className="grid_6">
+                    <h1 className="no-top-margin">Menu</h1>
+                    <div><Link to="/login" className="navlink">Login</Link></div>
+                </div>
+            );
         }
 
         return (
@@ -49,10 +55,7 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
                 <div>
                     <div className="header"/>
                     <div className="container_24">
-                        <div id="nav" className="grid_6">
-                            <h1 className="no-top-margin">Menu</h1>
-                            {nav}
-                        </div>
+                        {nav}
                         <div id="content" className="prefix_1 grid_17">
                             <Route exact path="/" component={LoginComponent}/>
                             <Route exact path="/login" component={LoginComponent}/>

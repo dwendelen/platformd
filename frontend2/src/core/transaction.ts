@@ -1,4 +1,5 @@
 export class SimpleTransaction {
+    uuid: string;
     date: Date;
     otherAccount: string;
     comment: string;
@@ -6,6 +7,7 @@ export class SimpleTransaction {
 }
 
 export class ComplexTransaction {
+    uuid: string;
     date: Date;
     comment: string;
     amount: number;
@@ -13,6 +15,7 @@ export class ComplexTransaction {
 }
 
 export class TransactionItem {
+    id: number;
     date: Date;
     account: string;
     comment: string;

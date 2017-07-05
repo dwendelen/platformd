@@ -22,12 +22,12 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
                 </div>
                 <div className="alpha grid_15 suffix_2 omega transactions">
                     {this.props.transactions.map(transaction =>
-                        <TransactionComp transaction={transaction} />
+                        <TransactionComp key={transaction.uuid} transaction={transaction} />
                     )}
                 </div>
                 <datalist id="destinations">
                     {summaries.map(s =>
-                        <option value={s.name}/>
+                        <option key={s.uuid} value={s.name}/>
                     )}
                 </datalist>
             </div>
