@@ -34,8 +34,8 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
             nav = (
                 <div id="nav" className="grid_6">
                     <h1 className="no-top-margin">Menu</h1>
-                    <div><Link to={`/users/${this.props.userId}`} className="navlink">Overview</Link></div>,
-                    <div><Link to="/details" className="navlink">Details</Link></div>,
+                    <div><Link to={`/users/${this.props.userId}`} className="navlink">Overview</Link></div>
+                    <div><Link to="/details" className="navlink">Details</Link></div>
                     <div><Link to="/budget" className="navlink">Budget</Link></div>
                     {accounts()}
                     <LogoutComponent />

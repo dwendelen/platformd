@@ -5,7 +5,7 @@
 export class SimpleTransaction implements Transaction {
     uuid: string;
     date: Date;
-    otherAccount: string;
+    account: string;
     comment: string;
     amount: number;
 }
