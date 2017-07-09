@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {RouteComponentProps} from 'react-router';
-import {Transaction} from '../core/transaction';
+import {Transaction} from '../core/transaction/transaction';
 import {connect, DispatchProp} from 'react-redux';
 import {AppState} from '../core/AppModel';
 import {TransactionComp} from './transaction/transaction';

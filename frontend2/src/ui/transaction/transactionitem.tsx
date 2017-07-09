@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {TransactionItem} from '../../core/transaction';
+import {TransactionItem} from '../../core/transaction/transaction';
 import {TransactionDate} from './date';
 import {Amount} from './amount';
 import {Comment} from './comment';

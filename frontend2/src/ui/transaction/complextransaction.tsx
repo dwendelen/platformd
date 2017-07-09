@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ComplexTransaction} from '../../core/transaction';
+import {ComplexTransaction} from '../../core/transaction/transaction';
 import {TransactionDate} from './date';
 import {Comment} from './comment';
 import {Amount} from './amount';

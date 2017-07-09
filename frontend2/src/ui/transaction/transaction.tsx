@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ComplexTransaction, SimpleTransaction, Transaction} from '../../core/transaction';
+import {ComplexTransaction, SimpleTransaction, Transaction} from '../../core/transaction/transaction';
 import {SimpleTransactionComp} from './simpletransaction';
 import {ComplexTransactionComp} from './complextransaction';
 

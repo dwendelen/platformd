@@ -17,7 +17,6 @@ class LogoutComponentImpl extends React.Component<DispatchProp<any> & RouteCompo
     }
 
     render() {
-        console.log(this.props);
         return (
             <div><a className="navlink" onClick={() => this.logout()}>Logout</a></div>
         );

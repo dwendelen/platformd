@@ -1,19 +1,45 @@
 import * as React from 'react';
-import {SimpleTransaction} from '../../core/transaction';
+import {SimpleTransaction} from '../../core/transaction/transaction';
 import {TransactionDate} from './date';
 import {Comment} from './comment';
 import {Amount} from './amount';
 import {Account} from './account';
 import {TransactionRowComponent, TransactionRowState} from './row';
+import {connect, DispatchProp} from 'react-redux';
 
 
 class TransactionCompProps {
     transaction: SimpleTransaction;
 }
 
-export class SimpleTransactionComp extends TransactionRowComponent<TransactionCompProps, TransactionRowState> {
+class SimpleTransactionCompImpl extends TransactionRowComponent<TransactionCompProps & DispatchProp<any>, TransactionRowState> {
     saveChanges(): void {
-        console.log("Saving changes")
+        let changes = [];
+        if(this.state.date.newValue !== null && this.state.date.newValue !== this.props.transaction.date) {
+            changes.push({
+                type: 'UPDATE_DATE',
+                newDate: this.state.date.newValue
+            })
+        }
+        if(this.state.comment.newValue !== null && this.state.comment.newValue !== this.props.transaction.comment) {
+            changes.push({
+                type: 'UPDATE_COMMENT',
+                newComment: this.state.comment.newValue
+            })
+        }
+        if(this.state.amount.newValue !== null && this.state.amount.newValue !== this.props.transaction.amount) {
+            changes.push({
+                type: 'UPDATE_AMOUNT',
+                newAmount: this.state.amount.newValue
+            })
+        }
+        if(changes.length != 0) {
+            this.props.dispatch({
+                type: "UPDATE_SIMPLE_TRANSACTION",
+                uuid: this.props.transaction.uuid,
+                changes: changes
+            })
+        }
     }
 
     constructor() {
@@ -42,3 +68,7 @@ export class SimpleTransactionComp extends TransactionRowComponent<TransactionCo
         );
     }
 }
+
+const stateToProps = (state:{}, props: TransactionCompProps) => { return {}};
+
+export const SimpleTransactionComp = connect(stateToProps)(SimpleTransactionCompImpl);
