@@ -5,7 +5,6 @@ import {Route} from 'react-router';
 import {LoginComponent} from './login/login';
 import {AppState} from '../core/AppModel';
 import {connect, DispatchProp} from 'react-redux';
-import {Overview} from './overview';
 import {Details} from './details';
 import {Summary} from '../core/summary';
 import {Budget} from './budget';
@@ -34,9 +33,7 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
             nav = (
                 <div id="nav" className="grid_6">
                     <h1 className="no-top-margin">Menu</h1>
-                    <div><Link to={`/users/${this.props.userId}`} className="navlink">Overview</Link></div>
-                    <div><Link to="/details" className="navlink">Details</Link></div>
-                    <div><Link to="/budget" className="navlink">Budget</Link></div>
+                    <div><Link to={`/users/${this.props.userId}/budget`} className="navlink">Budget</Link></div>
                     {accounts()}
                     <LogoutComponent />
                 </div>
@@ -59,9 +56,8 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
                         <div id="content" className="prefix_1 grid_17">
                             <Route exact path="/" component={LoginComponent}/>
                             <Route exact path="/login" component={LoginComponent}/>
-                            <Route exact path="/users/:userId" component={Overview}/>
-                            <Route exact path="/details" component={Details}/>
-                            <Route exact path="/budget" component={Budget}/>
+                            <Route exact path="/users/:userId/budget" component={Budget}/>
+                            <Route exact path="/accounts/:uuid" component={Details}/>
                         </div>
                     </div>
                 </div>

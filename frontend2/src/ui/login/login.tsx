@@ -20,7 +20,7 @@ class LoginComponentImpl extends React.Component<RouteComponentProps<{}> & Dispa
             type: 'LOGGED_IN',
             user: googleUser
         });
-        this.props.history.push('/users/testuser');
+        this.props.history.push('/users/testuser/budget');
     }
 
     render() {

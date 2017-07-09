@@ -3,12 +3,13 @@ import * as Moment from 'moment';
 import {ChangeEvent} from 'react'
 import { Field} from './field';
 
-interface TransactionDateProps {
-    date: Date,
-    editing: boolean
-    prefix: boolean
-    onChange: (newValue: Field<Date>) => void
-    field: Field<Date>
+class TransactionDateProps {
+    date: Date;
+    editing: boolean;
+    prefix: boolean;
+    onChange: (newValue: Field<Date>) => void;
+    field: Field<Date>;
+    autofocus?: boolean;
 }
 
 
@@ -30,12 +31,13 @@ export class TransactionDate extends React.Component<TransactionDateProps> {
     }
 
     render() {
+        let autofocus = this.props.autofocus || false;
         let className = this.props.prefix ? 'alpha prefix_1 grid_3' : 'alpha grid_3';
         if (this.props.editing) {
             let inputClass = this.props.field.error? "error": "";
             return (
                 <div className={className}>
-                    <input type="text" className={inputClass} onChange={e => this.onChange(e)}
+                    <input autoFocus={autofocus} type="text" className={inputClass} onChange={e => this.onChange(e)}
                            defaultValue={Moment(this.props.date).format('YYYY-MM-DD')}/>
                 </div>
             );

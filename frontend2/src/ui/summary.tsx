@@ -1,19 +1,21 @@
 import * as React from 'react';
 import {Summary} from '../core/summary';
+import {Link} from 'react-router-dom';
 
 export class SummaryComp extends React.Component<SummaryProps, {}> {
     render() {
-        let balance = this.props.summary.balance;
-        let name = this.props.summary.name;
+        let {balance, name, uuid} = this.props.summary;
 
         let className = balance < 0 ?
             'grid_2 omega currency negative' : 'grid_2 omega currency';
 
-        return (
+        return (<Link to={`/accounts/${uuid}`}>
             <div className="alpha grid_6 omega">
-                <div className="alpha grid_4 name">{name}</div>
-                <div className={className}>{balance}</div>
-            </div>
+
+                    <div className="alpha grid_4 name">{name}</div>
+                    <div className={className}>{balance}</div>
+
+            </div></Link>
         );
     }
 }

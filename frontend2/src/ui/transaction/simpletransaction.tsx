@@ -4,38 +4,31 @@ import {TransactionDate} from './date';
 import {Comment} from './comment';
 import {Amount} from './amount';
 import {Account} from './account';
-import {RowComponent, RowState} from './row';
+import {TransactionRowComponent, TransactionRowState} from './row';
 
 
 class TransactionCompProps {
     transaction: SimpleTransaction;
 }
 
-export class SimpleTransactionState extends RowState {
-    editing: boolean = false;
-}
-
-export class SimpleTransactionComp extends RowComponent<TransactionCompProps, SimpleTransactionState> {
-    constructor() {
-        super();
-        this.state = new SimpleTransactionState();
+export class SimpleTransactionComp extends TransactionRowComponent<TransactionCompProps, TransactionRowState> {
+    saveChanges(): void {
+        console.log("Saving changes")
     }
 
-    rowClicked() {
-        if (!this.state.editing) {
-            this.updateState({
-                editing: {
-                    $set: true
-                }
-            });
-        }
+    constructor() {
+        super();
+        this.state = new TransactionRowState();
     }
 
     render() {
         let {date, otherAccount, amount, comment} = this.props.transaction;
         return (
-            <div className="alpha grid_15 omega" onClick={() => this.rowClicked()}>
+            <div className="alpha grid_15 omega"
+                 onClick={() => this.rowClicked()}
+                 onKeyDown={e => this.keyPressed(e)}>
                 <TransactionDate date={date} prefix={false} editing={this.state.editing}
+                                 autofocus
                                  field={this.state.date}
                                  onChange={f => this.onDateChange(f)}/>
                 <Account account={otherAccount} editing={this.state.editing}/>

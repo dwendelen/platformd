@@ -48,3 +48,48 @@ export abstract class RowComponent<P, S extends RowState> extends Component<P, S
 
     onUpdated(newState: S) {}
 }
+
+export class TransactionRowState extends RowState {
+    editing: boolean = false;
+}
+
+export abstract class TransactionRowComponent<P, S extends TransactionRowState> extends RowComponent<P, S> {
+    rowClicked() {
+        if (!this.state.editing) {
+            this.updateState(this.getRowClickedUpdateObject());
+        }
+    }
+
+    keyPressed(e: React.KeyboardEvent<HTMLDivElement>) {
+        const ESCAPE = 27;
+        const ENTER = 13;
+
+        switch(e.keyCode) {
+            case ESCAPE:
+                this.stopEditing();
+                break;
+            case ENTER:
+                this.saveChanges();
+                this.stopEditing();
+                break;
+        }
+    }
+
+    private stopEditing() {
+        this.updateState({
+            editing: {
+                $set: false
+            }
+        });
+    }
+
+    abstract saveChanges(): void
+
+    protected getRowClickedUpdateObject() {
+        return {
+            editing: {
+                $set: true
+            }
+        };
+    }
+}
