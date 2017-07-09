@@ -33,7 +33,7 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
             nav = (
                 <div id="nav" className="grid_6">
                     <h1 className="no-top-margin">Menu</h1>
-                    <div><Link to={`/users/${this.props.userId}/budget`} className="navlink">Budget</Link></div>
+                    <Link to={`/users/${this.props.userId}/budget`}><div className="alpha grid_6 omega">Budget</div></Link>
                     {accounts()}
                     <LogoutComponent />
                 </div>
@@ -42,7 +42,7 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
             nav = (
                 <div id="nav" className="grid_6">
                     <h1 className="no-top-margin">Menu</h1>
-                    <div><Link to="/login" className="navlink">Login</Link></div>
+                    <Link to="/login"><div className="alpha grid_6 omega">Login</div></Link>
                 </div>
             );
         }

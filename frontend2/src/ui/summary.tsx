@@ -9,13 +9,13 @@ export class SummaryComp extends React.Component<SummaryProps, {}> {
         let className = balance < 0 ?
             'grid_2 omega currency negative' : 'grid_2 omega currency';
 
-        return (<Link to={`/accounts/${uuid}`}>
-            <div className="alpha grid_6 omega">
-
+        return (
+            <Link to={`/accounts/${uuid}`}>
+                <div className="alpha grid_6 omega">
                     <div className="alpha grid_4 name">{name}</div>
                     <div className={className}>{balance}</div>
-
-            </div></Link>
+                </div>
+            </Link>
         );
     }
 }

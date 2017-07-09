@@ -98,6 +98,7 @@ export class ComplexTransactionComp extends TransactionRowComponent<TransactionC
 
         return this.props.transaction.otherItems.map(item => {
             return <TransactionItemComp item={item}
+                                        key={item.id}
                                         editing={this.state.editing}
                                         onTransactionItemChange={f => this.onItemChange(item.id, f)}
             />;

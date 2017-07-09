@@ -2,8 +2,8 @@
 <div class="container_24">
   <div #nav class="grid_6">
       <h1 class="no-top-margin">Menu</h1>
-      <div><a *ngIf="!loggedIn()" class="navlink" routerLink="/login">Login</a></div>
-      <div><a *ngIf="loggedIn()" class="navlink" [routerLink]="['/users', getUserId()]">Overview</a></div>
+      <div><a *ngIf="!loggedIn()" routerLink="/login">Login</a></div>
+      <div><a *ngIf="loggedIn()" [routerLink]="['/users', getUserId()]">Overview</a></div>
 
       <summary *ngFor="let account of accountss | async" [item]="account"></summary>
 

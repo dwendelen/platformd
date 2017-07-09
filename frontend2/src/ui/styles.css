@@ -5,6 +5,10 @@ body {
     color: #1d1d1d;
 }
 
+a {
+    color: #1d1d1d;
+}
+
 .header {
     height: 100px;
 }
@@ -35,6 +39,9 @@ body {
 }
 input.error {
     background-color: red;
+}
+a.logout-link {
+    cursor: pointer;
 }
 /*.transactions > div {*/
     /*padding-top: 6px;*/

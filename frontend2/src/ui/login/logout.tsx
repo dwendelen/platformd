@@ -18,7 +18,7 @@ class LogoutComponentImpl extends React.Component<DispatchProp<any> & RouteCompo
 
     render() {
         return (
-            <div><a className="navlink" onClick={() => this.logout()}>Logout</a></div>
+            <a className="logout-link" onClick={() => this.logout()}><div className="alpha grid_6 omega">Logout</div></a>
         );
     }
 }
