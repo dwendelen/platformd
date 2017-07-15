@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import {AmountField, CommentField, DateField, RowField} from './field';
+import {AmountField, CommentField, DateField, RowField} from './fields';
 import * as update from 'immutability-helper'
 import {DispatchProp} from 'react-redux';
 

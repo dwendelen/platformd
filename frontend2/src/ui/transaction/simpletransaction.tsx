@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {SimpleTransaction} from '../../core/transaction/transaction';
-import {TransactionDate} from './date';
-import {Comment} from './comment';
-import {Amount} from './amount';
 import {Account} from './account';
 import {TransactionRowComponent, TransactionRowState} from './row';
 import {connect, DispatchProp} from 'react-redux';
-import {AmountField, CommentField, DateField, SimpleTransactionField} from './field';
+import {AmountField, CommentField, DateField, SimpleTransactionField} from './fields';
+import {Field} from './field';
 
 
 interface TransactionCompProps {
@@ -43,21 +41,21 @@ class SimpleTransactionCompImpl extends TransactionRowComponent<TransactionCompP
             <div className="alpha grid_15 omega"
                  onClick={() => this.rowClicked()}
                  onKeyDown={e => this.keyPressed(e)}>
-                <TransactionDate prefix={false}
-                                 editing={this.state.editing}
-                                 autofocus
-                                 field={this.state.field.date}
-                                 onChange={f => this.onDateChange(f)}/>
+                <Field className="alpha grid_3"
+                       editing={this.state.editing}
+                       field={this.state.field.date}
+                       onChange={f => this.onDateChange(f)}
+                       autofocus/>
                 <Account account={otherAccount}
                          editing={this.state.editing}/>
-                <Comment short={false}
-                         editing={this.state.editing}
-                         field={this.state.field.comment}
-                         onChange={f => this.onCommentChange(f)}/>
-                <Amount suffix={false}
-                        editing={this.state.editing}
-                        field={this.state.field.amount}
-                        onChange={f => this.onAmountChange(f)}/>
+                <Field className="grid_6"
+                       editing={this.state.editing}
+                       field={this.state.field.comment}
+                       onChange={f => this.onCommentChange(f)}/>
+                <Field className="grid_2 omega currency"
+                       editing={this.state.editing}
+                       field={this.state.field.amount}
+                       onChange={f => this.onAmountChange(f)}/>
             </div>
         );
     }

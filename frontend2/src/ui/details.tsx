@@ -7,9 +7,20 @@ import {Summary} from '../core/summary';
 import {ComplexTransactionComp} from './transaction/complextransaction';
 import {SimpleTransactionComp} from './transaction/simpletransaction';
 
-export class DetailsImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<any> & DetailsProps> {
+export class DetailsImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<any> & DetailsProps, DetailsState> {
+    constructor() {
+        super();
+        this.state = {
+            adding: false
+        }
+    }
+
     isComplex(transaction: Transaction) {
         return 'otherItems' in transaction;
+    }
+
+    addRow() {
+        return
     }
 
     render() {
@@ -19,12 +30,16 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
                 <div className="alpha grid_17 omega center">
                     <h1 className="no-top-margin">This is my account</h1>
                 </div>
+                <div className="alpha grid_17 omega">
+                    <button onClick={() => this.createClicked()}>Create</button>
+                </div>
                 <div className="alpha grid_15 suffix_2 omega transactions">
                     <div className="alpha grid_3">Date</div>
                     <div className="grid_4">Account / Bucket</div>
                     <div className="grid_6">Comment</div>
                     <div className="grid_2 omega">Amount</div>
                 </div>
+                {this.addRow()}
                 <div className="alpha grid_15 suffix_2 omega transactions">
                     {
                         this.props.transactions.map(transaction => {
@@ -44,12 +59,20 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
             </div>
         );
     }
+
+    private createClicked() {
+
+    }
 }
 
 interface DetailsProps {
     accounts: Summary[];
     buckets: Summary[];
     transactions: Transaction[];
+}
+
+interface DetailsState {
+    adding: boolean
 }
 
 const mapStateToProps = (state: AppState, _: RouteComponentProps<{}>): DetailsProps => ({

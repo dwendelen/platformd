@@ -6,6 +6,9 @@ export interface FieldLike {
 }
 
 export interface Field<F extends Field<F, T>, T> extends FieldLike {
+    oldValue: T;
+    error: boolean;
+    getOldValueAsString(): string;
     onChange(newValue: string): F
 }
 
@@ -21,8 +24,8 @@ abstract class AbstractField<F extends AbstractField<F, T>, T> implements Field<
     }
 
     abstract onChange(newValue: string): F
-
     abstract generateChange(): any
+    abstract getOldValueAsString(): string
 
     isError(): boolean {
         return this.error;
@@ -38,6 +41,10 @@ abstract class AbstractField<F extends AbstractField<F, T>, T> implements Field<
 }
 
 export class DateField extends AbstractField<DateField, Date> {
+    getOldValueAsString(): string {
+        return Moment(this.oldValue).format('YYYY-MM-DD');
+    }
+
     onChange(newValue: string): DateField {
         let moment = Moment(newValue, 'YYYY-MM-DD', true);
         if (moment.isValid()) {
@@ -56,6 +63,10 @@ export class DateField extends AbstractField<DateField, Date> {
 }
 
 export class AmountField extends AbstractField<AmountField, number> {
+    getOldValueAsString(): string {
+        return String(this.oldValue);
+    }
+
     onChange(newValue: string): AmountField {
         let newNumber = Number(newValue);
 
@@ -75,6 +86,10 @@ export class AmountField extends AbstractField<AmountField, number> {
 }
 
 export class CommentField extends AbstractField<CommentField, string> {
+    getOldValueAsString(): string {
+        return this.oldValue;
+    }
+
     onChange(newValue: string): CommentField {
         return new CommentField(this.oldValue, newValue);
     }
@@ -107,7 +122,7 @@ abstract class CompositeField implements FieldLike {
         this.fields.forEach(f => {
             const change = f.getChange();
             if(change === null) {
-                return
+                return;
             }
             changes.push(change);
         });
@@ -162,7 +177,7 @@ export class SimpleTransactionField extends RowField<SimpleTransactionField> {
 
     generateChange(changes: any[]): any {
         return {
-            type: "UPDATE_SIMPLE_TRANSACTION",
+            type: 'UPDATE_SIMPLE_TRANSACTION',
             uuid: this.uuid,
             changes: changes
         };
@@ -201,7 +216,7 @@ export class ComplexTransactionField extends RowField<ComplexTransactionField> {
 
     generateChange(changes: any[]): any {
         return {
-            type: "UPDATE_COMPLEX_TRANSACTION",
+            type: 'UPDATE_COMPLEX_TRANSACTION',
             uuid: this.uuid,
             changes: changes
         };
@@ -230,7 +245,7 @@ export class TransactionItemField extends RowField<TransactionItemField> {
 
     generateChange(changes: any[]): any {
         return {
-            type: "UPDATE_TRANSACTION_ITEM",
+            type: 'UPDATE_TRANSACTION_ITEM',
             id: this.id,
             changes: changes
         };

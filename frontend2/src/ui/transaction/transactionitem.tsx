@@ -1,11 +1,8 @@
 import * as React from 'react';
-
-import {TransactionDate} from './date';
-import {Amount} from './amount';
-import {Comment} from './comment';
 import {Account} from './account';
 import {RowComponent, RowState} from './row';
-import {TransactionItemField} from './field';
+import {TransactionItemField} from './fields';
+import {Field} from './field';
 
 class ItemProps {
     editing: boolean;
@@ -19,20 +16,21 @@ export class TransactionItemComp extends RowComponent<ItemProps, RowState<Transa
         let account = 'acc';
         return (
             <div className="alpha grid_15 omega">
-                <TransactionDate prefix={true}
-                                 editing={this.props.editing}
-                                 field={this.props.field.date}
-                                 onChange={e => this.onDateChange(e)} />
+                <Field className="alpha prefix_1 grid_3"
+                       editing={this.props.editing}
+                       field={this.props.field.date}
+                       onChange={f => this.onDateChange(f)}
+                       autofocus/>
                 <Account account={account}
                          editing={this.props.editing}/>
-                <Comment short={true}
-                         editing={this.props.editing}
-                         field={this.props.field.comment}
-                         onChange={e => this.onCommentChange(e)} />
-                <Amount suffix={true}
-                        editing={this.props.editing}
-                        field={this.props.field.amount}
-                        onChange={f => this.onAmountChange(f)}/>
+                <Field className="grid_4"
+                       editing={this.props.editing}
+                       field={this.props.field.comment}
+                       onChange={f => this.onCommentChange(f)}/>
+                <Field className="grid_2 suffix_1 omega currency"
+                       editing={this.props.editing}
+                       field={this.props.field.amount}
+                       onChange={f => this.onAmountChange(f)}/>
             </div>
         );
     }

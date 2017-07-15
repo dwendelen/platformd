@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {ComplexTransaction} from '../../core/transaction/transaction';
-import {TransactionDate} from './date';
-import {Comment} from './comment';
-import {Amount} from './amount';
 import {TransactionItemComp} from './transactionitem';
 import {TransactionRowComponent, TransactionRowState} from './row';
-import {AmountField, CommentField, ComplexTransactionField, DateField, TransactionItemField} from './field';
+import {AmountField, CommentField, ComplexTransactionField, DateField, TransactionItemField} from './fields';
 import {connect, DispatchProp} from 'react-redux';
+import {Field} from './field';
 
 class TransactionCompProps {
     transaction: ComplexTransaction;
@@ -28,7 +26,7 @@ class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionComp
     }
 
     componentWillReceiveProps(newProps: TransactionCompProps) {
-        if(newProps.transaction != this.props.transaction) {
+        if (newProps.transaction != this.props.transaction) {
             this.updateField(this.createField(newProps));
         }
     }
@@ -43,10 +41,10 @@ class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionComp
             const commentField = new CommentField(item.comment);
             const amountField = new AmountField(item.amount);
 
-            return new TransactionItemField(item.id, dateField, commentField, amountField)
+            return new TransactionItemField(item.id, dateField, commentField, amountField);
         });
 
-        return new ComplexTransactionField(props.transaction.uuid,  dateField, commentField, amountField, items)
+        return new ComplexTransactionField(props.transaction.uuid, dateField, commentField, amountField, items);
     }
 
     complexClicked(e: React.MouseEvent<HTMLDivElement>) {
@@ -76,22 +74,26 @@ class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionComp
             <div className="alpha grid_15 omega"
                  onClick={() => this.rowClicked()}
                  onKeyDown={e => this.keyPressed(e)}>
-                <TransactionDate prefix={false}
-                                 editing={this.state.editing}
-                                 autofocus
-                                 field={this.state.field.date}
-                                 onChange={f => this.onDateChange(f)}/>
-                <div className="grid_4" onClick={e => this.complexClicked(e)}>
-                    &lt;Complex&gt;
+                <div className="alpha grid_15 omega"
+                     onClick={() => this.rowClicked()}
+                     onKeyDown={e => this.keyPressed(e)}>
+                    <Field className="alpha grid_3"
+                           editing={this.state.editing}
+                           field={this.state.field.date}
+                           onChange={f => this.onDateChange(f)}
+                           autofocus/>
+                    <div className="grid_4" onClick={e => this.complexClicked(e)}>
+                        &lt;Complex&gt;
+                    </div>
+                    <Field className="grid_6"
+                           editing={this.state.editing}
+                           field={this.state.field.comment}
+                           onChange={f => this.onCommentChange(f)}/>
+                    <Field className="grid_2 omega currency"
+                           editing={this.state.editing}
+                           field={this.state.field.amount}
+                           onChange={f => this.onAmountChange(f)}/>
                 </div>
-                <Comment short={false}
-                         editing={this.state.editing}
-                         field={this.state.field.comment}
-                         onChange={f => this.onCommentChange(f)}/>
-                <Amount suffix={false}
-                        editing={this.state.editing}
-                        field={this.state.field.amount}
-                        onChange={f => this.onAmountChange(f)}/>
                 {this.itemsOrEmptyList()}
             </div>
         );
@@ -116,6 +118,8 @@ class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionComp
     }
 }
 
-const stateToProps = (state:{}, props: TransactionCompProps) => { return {}};
+const stateToProps = (state: {}, props: TransactionCompProps) => {
+    return {};
+};
 
 export const ComplexTransactionComp = connect(stateToProps)(ComplexTransactionCompImpl);
