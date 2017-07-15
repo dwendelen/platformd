@@ -82,7 +82,7 @@ export class CommentField extends AbstractField<CommentField, string> {
     generateChange(): any {
         return {
             type: 'UPDATE_COMMENT',
-            newAmount: this.newValue
+            newComment: this.newValue
         };
     }
 }

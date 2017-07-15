@@ -18,7 +18,22 @@ interface ComplexTransactionState extends TransactionRowState<ComplexTransaction
 
 class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionCompProps & DispatchProp<any>, ComplexTransactionState, ComplexTransactionField> {
     constructor(props: TransactionCompProps & DispatchProp<any>) {
-        super();
+        super(props);
+
+        this.state = {
+            expanded: false,
+            editing: false,
+            field: this.createField(props)
+        };
+    }
+
+    componentWillReceiveProps(newProps: TransactionCompProps) {
+        if(newProps.transaction != this.props.transaction) {
+            this.updateField(this.createField(newProps));
+        }
+    }
+
+    createField(props: TransactionCompProps) {
         const dateField = new DateField(props.transaction.date);
         const commentField = new CommentField(props.transaction.comment);
         const amountField = new AmountField(props.transaction.amount);
@@ -31,11 +46,7 @@ class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionComp
             return new TransactionItemField(item.id, dateField, commentField, amountField)
         });
 
-        this.state = {
-            expanded: false,
-            editing: false,
-            field: new ComplexTransactionField(props.transaction.uuid,  dateField, commentField, amountField, items)
-        };
+        return new ComplexTransactionField(props.transaction.uuid,  dateField, commentField, amountField, items)
     }
 
     complexClicked(e: React.MouseEvent<HTMLDivElement>) {
@@ -91,8 +102,8 @@ class ComplexTransactionCompImpl extends TransactionRowComponent<TransactionComp
             return [];
         }
 
-        return this.props.transaction.otherItems.map(item => {
-            return <TransactionItemComp item={item}
+        return this.state.field.items.map(item => {
+            return <TransactionItemComp field={item}
                                         key={item.id}
                                         editing={this.state.editing}
                                         onTransactionItemChange={f => this.onItemChange(f)}

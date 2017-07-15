@@ -9,34 +9,19 @@ export interface RowState<T extends RowField<T>> {
 
 export abstract class RowComponent<P, S extends RowState<T>, T extends RowField<T>> extends Component<P, S> {
     onDateChange(date: DateField): void {
-        this.updateField(this.state.field.withDate(date));
+        this.updateField(this.getField().withDate(date));
     }
 
     onCommentChange(comment: CommentField) {
-        this.updateField(this.state.field.withComment(comment));
+        this.updateField(this.getField().withComment(comment));
     }
 
     onAmountChange(amount: AmountField) {
-        this.updateField(this.state.field.withAmount(amount));
+        this.updateField(this.getField().withAmount(amount));
     }
 
-    updateField(newField: T) {
-        this.updateState({
-            field: {
-                $set: newField
-            }
-        });
-        this.onUpdated(newField);
-    }
-
-    updateState(stateUpdate: any) {
-        let newState = update(this.state, stateUpdate);
-        this.setState(
-            newState
-        );
-    }
-
-    onUpdated(newField: T) {}
+    abstract getField(): T
+    abstract updateField(newField: T): void
 }
 
 export interface TransactionRowState<T extends RowField<T>> extends RowState<T> {
@@ -44,6 +29,10 @@ export interface TransactionRowState<T extends RowField<T>> extends RowState<T> 
 }
 
 export abstract class TransactionRowComponent<P extends DispatchProp<any>, S extends TransactionRowState<T>, T extends RowField<T>> extends RowComponent<P, S, T> {
+    getField() {
+        return this.state.field;
+    }
+
     rowClicked() {
         if (!this.state.editing) {
             this.updateState(this.getRowClickedUpdateObject());
@@ -93,5 +82,19 @@ export abstract class TransactionRowComponent<P extends DispatchProp<any>, S ext
                 $set: true
             }
         };
+    }
+
+    updateField(newField: T) {
+        this.updateState({
+            field: {
+                $set: newField
+            }
+        });
+    }
+
+    updateState(stateUpdate: any) {
+        this.setState(oldState =>
+            update(oldState, stateUpdate)
+        );
     }
 }

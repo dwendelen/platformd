@@ -15,15 +15,26 @@ interface TransactionCompProps {
 
 class SimpleTransactionCompImpl extends TransactionRowComponent<TransactionCompProps & DispatchProp<any>, TransactionRowState<SimpleTransactionField>, SimpleTransactionField> {
     constructor(props: TransactionCompProps & DispatchProp<any>) {
-        super();
+        super(props);
+
+        this.state =  {
+            editing: false,
+            field: this.createField(props)
+        };
+    }
+
+    componentWillReceiveProps(newProps: TransactionCompProps) {
+        if(newProps.transaction != this.props.transaction) {
+            this.updateField(this.createField(newProps));
+        }
+    }
+
+    createField(props: TransactionCompProps) {
         const dateField = new DateField(props.transaction.date);
         const commentField = new CommentField(props.transaction.comment);
         const amountField = new AmountField(props.transaction.amount);
 
-        this.state =  {
-            editing: false,
-            field: new SimpleTransactionField(props.transaction.uuid, dateField, commentField, amountField)
-        };
+        return new SimpleTransactionField(props.transaction.uuid, dateField, commentField, amountField);
     }
 
     render() {

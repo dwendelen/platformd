@@ -1,12 +1,17 @@
 import * as React from 'react';
 import {RouteComponentProps} from 'react-router';
-import {Transaction} from '../core/transaction/transaction';
+import {ComplexTransaction, SimpleTransaction, Transaction} from '../core/transaction/transaction';
 import {connect, DispatchProp} from 'react-redux';
 import {AppState} from '../core/AppModel';
-import {TransactionComp} from './transaction/transaction';
 import {Summary} from '../core/summary';
+import {ComplexTransactionComp} from './transaction/complextransaction';
+import {SimpleTransactionComp} from './transaction/simpletransaction';
 
 export class DetailsImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<any> & DetailsProps> {
+    isComplex(transaction: Transaction) {
+        return 'otherItems' in transaction;
+    }
+
     render() {
         let summaries = this.props.buckets.concat(this.props.accounts);
         return (
@@ -21,9 +26,15 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
                     <div className="grid_2 omega">Amount</div>
                 </div>
                 <div className="alpha grid_15 suffix_2 omega transactions">
-                    {this.props.transactions.map(transaction =>
-                        <TransactionComp key={transaction.uuid} transaction={transaction} />
-                    )}
+                    {
+                        this.props.transactions.map(transaction => {
+                            if (this.isComplex(transaction)) {
+                                return <ComplexTransactionComp transaction={transaction as ComplexTransaction}/>;
+                            } else {
+                               return <SimpleTransactionComp transaction={transaction as SimpleTransaction}/>;
+                            }
+                        })
+                    }
                 </div>
                 <datalist id="destinations">
                     {summaries.map(s =>
