@@ -6,10 +6,7 @@ import {Amount} from './amount';
 import {Comment} from './comment';
 import {Account} from './account';
 import {RowComponent, RowState} from './row';
-
-export class TransactionItemField extends RowState {
-    id: number;
-}
+import {AmountField, CommentField, DateField, TransactionItemField} from './field';
 
 class ItemProps {
     editing: boolean;
@@ -17,31 +14,41 @@ class ItemProps {
     onTransactionItemChange: (newItem: TransactionItemField) => void;
 }
 
-export class TransactionItemComp extends RowComponent<ItemProps, RowState > {
-    constructor() {
+export class TransactionItemComp extends RowComponent<ItemProps, RowState<TransactionItemField>, TransactionItemField> {
+    constructor(props: ItemProps) {
         super();
-        this.state = new RowState();
+        const dateField = new DateField(props.item.date);
+        const commentField = new CommentField(props.item.comment);
+        const amountField = new AmountField(props.item.amount);
+
+        this.state = {
+            field: new TransactionItemField(props.item.id, dateField, commentField, amountField)
+        }
     }
 
     render() {
-        let {date, account, amount, comment} = this.props.item;
+        let { account} = this.props.item;
         return (
             <div className="alpha grid_15 omega">
-                <TransactionDate date={date} prefix={true} editing={this.props.editing}
-                                 field={this.state.date}
+                <TransactionDate prefix={true}
+                                 editing={this.props.editing}
+                                 field={this.state.field.date}
                                  onChange={e => this.onDateChange(e)} />
-                <Account account={account} editing={this.props.editing}/>
-                <Comment comment={comment} short={true} editing={this.props.editing}
-                         field={this.state.comment}
+                <Account account={account}
+                         editing={this.props.editing}/>
+                <Comment short={true}
+                         editing={this.props.editing}
+                         field={this.state.field.comment}
                          onChange={e => this.onCommentChange(e)} />
-                <Amount amount={amount} suffix={true} editing={this.props.editing}
-                        field={this.state.amount}
+                <Amount suffix={true}
+                        editing={this.props.editing}
+                        field={this.state.field.amount}
                         onChange={f => this.onAmountChange(f)}/>
             </div>
         );
     }
 
-    onUpdated(tif: TransactionItemField) {
-        this.props.onTransactionItemChange(tif);
+    onUpdated(newField: TransactionItemField) {
+        this.props.onTransactionItemChange(newField);
     }
 }

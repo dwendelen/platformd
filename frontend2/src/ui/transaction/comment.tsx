@@ -1,22 +1,17 @@
 import * as React from 'react';
-import {Field} from './field';
+import {CommentField} from './field';
 import {ChangeEvent} from 'react';
 
 interface CommentProps {
-    comment: string;
     editing: boolean;
     short: boolean;
-    onChange: (newValue: Field<string>) => void
-    field: Field<string>
+    onChange: (newValue: CommentField) => void
+    field: CommentField
 }
 
 export class Comment extends React.Component<CommentProps> {
     onChange(e: ChangeEvent<HTMLInputElement>) {
-        let newValue = e.target.value;
-        this.props.onChange({
-            newValue: newValue,
-            error: false
-        });
+        this.props.onChange(this.props.field.onChange(e.target.value))
     }
 
     render() {
@@ -24,13 +19,13 @@ export class Comment extends React.Component<CommentProps> {
         if (this.props.editing) {
             return (
                 <div className={className}>
-                    <input type="text" defaultValue={this.props.comment} onChange={e => this.onChange(e)}/>
+                    <input type="text" defaultValue={this.props.field.oldValue} onChange={e => this.onChange(e)}/>
                 </div>
             );
         } else {
             return (
                 <div className={className}>
-                    {this.props.comment || <div>&nbsp;</div>}
+                    {this.props.field.oldValue || <div>&nbsp;</div>}
                 </div>
             );
         }

@@ -1,33 +1,20 @@
 import * as React from 'react';
 import * as Moment from 'moment';
 import {ChangeEvent} from 'react'
-import { Field} from './field';
+import {DateField} from './field';
 
 class TransactionDateProps {
-    date: Date;
     editing: boolean;
     prefix: boolean;
-    onChange: (newValue: Field<Date>) => void;
-    field: Field<Date>;
+    onChange: (newValue: DateField) => void;
+    field: DateField;
     autofocus?: boolean;
 }
 
 
 export class TransactionDate extends React.Component<TransactionDateProps> {
     onChange(e: ChangeEvent<HTMLInputElement>) {
-        let newValue = e.target.value;
-        let moment = Moment(newValue, 'YYYY-MM-DD', true);
-        if(moment.isValid()) {
-            this.props.onChange({
-                newValue: moment.toDate(),
-                error: false
-            })
-        } else {
-            this.props.onChange({
-                newValue: null,
-                error: true
-            })
-        }
+        this.props.onChange(this.props.field.onChange(e.target.value))
     }
 
     render() {
@@ -38,13 +25,13 @@ export class TransactionDate extends React.Component<TransactionDateProps> {
             return (
                 <div className={className}>
                     <input autoFocus={autofocus} type="text" className={inputClass} onChange={e => this.onChange(e)}
-                           defaultValue={Moment(this.props.date).format('YYYY-MM-DD')}/>
+                           defaultValue={Moment(this.props.field.oldValue).format('YYYY-MM-DD')}/>
                 </div>
             );
         } else {
             return (
                 <div className={className}>
-                    {Moment(this.props.date).format('YYYY-MM-DD')}
+                    {Moment(this.props.field.oldValue).format('YYYY-MM-DD')}
                 </div>
             );
         }

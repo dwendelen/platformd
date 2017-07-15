@@ -1,5 +1,4 @@
 import './styles.css';
-import './960.css';
 import './960_24.css';
 import registerServiceWorker from './registerServiceWorker';
 
