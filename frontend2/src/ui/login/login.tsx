@@ -3,6 +3,7 @@ import {connect, DispatchProp} from 'react-redux';
 import {RouteComponentProps} from 'react-router';
 import GoogleLogin, {GoogleLoginResponse} from 'react-google-login';
 import {AppState, LoginState} from '../../core/AppModel';
+import {LoginAction} from '../../core/login/actions';
 
 interface LoginProps {
     state: LoginState;
@@ -12,8 +13,10 @@ const mapStateToProps = (state: AppState, _: RouteComponentProps<{}>): LoginProp
     state: state.loginState
 });
 
-class LoginComponentImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<any> & LoginProps> {
-    failed(_: any): void {}
+class LoginComponentImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<LoginAction> & LoginProps> {
+    failed(_: {}): void  {
+        // eslint-disable-next-line
+    }
 
     loggedIn(googleUser: GoogleLoginResponse): void {
         this.props.dispatch({

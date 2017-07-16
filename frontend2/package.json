@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/gapi": "0.0.33",
+    "@types/gapi.auth2": "0.0.40",
     "@types/immutability-helper": "^2.0.15",
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.7",

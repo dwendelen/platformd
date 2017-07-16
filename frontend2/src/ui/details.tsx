@@ -7,12 +7,14 @@ import {Summary} from '../core/summary';
 import {ComplexTransactionComp} from './transaction/complextransaction';
 import {SimpleTransactionComp} from './transaction/simpletransaction';
 
-export class DetailsImpl extends React.Component<RouteComponentProps<{}> & DispatchProp<any> & DetailsProps, DetailsState> {
+type PropsIn = RouteComponentProps<{}> & DispatchProp<{}> & DetailsProps;
+
+export class DetailsImpl extends React.Component<PropsIn, DetailsState> {
     constructor() {
         super();
         this.state = {
             adding: false
-        }
+        };
     }
 
     isComplex(transaction: Transaction) {
@@ -20,7 +22,7 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
     }
 
     addRow() {
-        return
+        return;
     }
 
     render() {
@@ -61,7 +63,7 @@ export class DetailsImpl extends React.Component<RouteComponentProps<{}> & Dispa
     }
 
     private createClicked() {
-
+        // eslint-disable-next-line
     }
 }
 
@@ -72,7 +74,7 @@ interface DetailsProps {
 }
 
 interface DetailsState {
-    adding: boolean
+    adding: boolean;
 }
 
 const mapStateToProps = (state: AppState, _: RouteComponentProps<{}>): DetailsProps => ({

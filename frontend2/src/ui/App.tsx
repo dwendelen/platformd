@@ -33,7 +33,9 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
             nav = (
                 <div id="nav" className="grid_6">
                     <h1 className="no-top-margin">Menu</h1>
-                    <Link to={`/users/${this.props.userId}/budget`}><div className="alpha grid_6 omega">Budget</div></Link>
+                    <Link to={`/users/${this.props.userId}/budget`}>
+                        <div className="alpha grid_6 omega">Budget</div>
+                    </Link>
                     {accounts()}
                     <LogoutComponent />
                 </div>
@@ -54,10 +56,10 @@ class AppImpl extends React.Component<DispatchProp<{}> & AppProps> {
                     <div className="container_24">
                         {nav}
                         <div id="content" className="prefix_1 grid_17">
-                            <Route exact path="/" component={LoginComponent}/>
-                            <Route exact path="/login" component={LoginComponent}/>
-                            <Route exact path="/users/:userId/budget" component={Budget}/>
-                            <Route exact path="/accounts/:uuid" component={Details}/>
+                            <Route exact={true} path="/" component={LoginComponent}/>
+                            <Route exact={true} path="/login" component={LoginComponent}/>
+                            <Route exact={true} path="/users/:userId/budget" component={Budget}/>
+                            <Route exact={true} path="/accounts/:uuid" component={Details}/>
                         </div>
                     </div>
                 </div>

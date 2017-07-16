@@ -1,17 +1,18 @@
 import {Reducer} from 'redux';
 import {LoginState} from '../AppModel';
-import {GoogleLoginResponse} from 'react-google-login';
 import {isUndefined} from 'util';
+import {LoginAction, LoginOrOutAction} from './actions';
 
 export const LoginReducer: Reducer<LoginState> =
-    (state: LoginState, action: any): LoginState => {
-        if(isUndefined(state)) {
-            return new LoginState()
+    (state: LoginState, action: LoginOrOutAction): LoginState => {
+        if (isUndefined(state)) {
+            return new LoginState();
         }
 
         switch (action.type) {
             case 'LOGGED_IN':
-                let googleUser = action.user as GoogleLoginResponse;
+                let loginAction = action as LoginAction;
+                let googleUser = loginAction.user;
                 let token = googleUser.getAuthResponse().id_token;
 
                 return {

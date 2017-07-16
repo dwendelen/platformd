@@ -1,13 +1,14 @@
-import {Component} from 'react';
+import * as React from 'react';
 import {AmountField, CommentField, DateField, RowField} from './fields';
-import * as update from 'immutability-helper'
+import * as update from 'immutability-helper';
 import {DispatchProp} from 'react-redux';
+import {TransactionChange} from '../../core/transaction/actions';
 
 export interface RowState<T extends RowField<T>> {
     field: T;
 }
 
-export abstract class RowComponent<P, S extends RowState<T>, T extends RowField<T>> extends Component<P, S> {
+export abstract class RowComponent<P, S extends RowState<T>, T extends RowField<T>> extends React.Component<P, S> {
     onDateChange(date: DateField): void {
         this.updateField(this.getField().withDate(date));
     }
@@ -20,17 +21,36 @@ export abstract class RowComponent<P, S extends RowState<T>, T extends RowField<
         this.updateField(this.getField().withAmount(amount));
     }
 
-    abstract getField(): T
-    abstract updateField(newField: T): void
+    abstract getField(): T;
+
+    abstract updateField(newField: T): void;
 }
 
 export interface TransactionRowState<T extends RowField<T>> extends RowState<T> {
     editing: boolean;
 }
 
-export abstract class TransactionRowComponent<P extends DispatchProp<any>, S extends TransactionRowState<T>, T extends RowField<T>> extends RowComponent<P, S, T> {
+export abstract class TransactionRowComponent<P extends DispatchProp<TransactionChange>,
+    S extends TransactionRowState<T>,
+    T extends RowField<T>>
+    extends RowComponent<P, S, T> {
+
     getField() {
         return this.state.field;
+    }
+
+    updateState(stateUpdate: {}) {
+        this.setState(oldState =>
+            update(oldState, stateUpdate)
+        );
+    }
+
+    updateField(newField: T) {
+        this.updateState({
+            field: {
+                $set: newField
+            }
+        });
     }
 
     rowClicked() {
@@ -43,7 +63,7 @@ export abstract class TransactionRowComponent<P extends DispatchProp<any>, S ext
         const ESCAPE = 27;
         const ENTER = 13;
 
-        switch(e.keyCode) {
+        switch (e.keyCode) {
             case ESCAPE:
                 this.stopEditing();
                 break;
@@ -53,27 +73,20 @@ export abstract class TransactionRowComponent<P extends DispatchProp<any>, S ext
                     this.stopEditing();
                 }
                 break;
+            default:
         }
     }
 
     saveChanges(): boolean {
-        if(this.state.field.isError()) {
+        if (this.state.field.isError()) {
             return false;
         }
 
         let change = this.state.field.getChange();
-        if(change !== null) {
+        if (change !== null) {
             this.props.dispatch(change);
         }
         return true;
-    }
-
-    private stopEditing() {
-        this.updateState({
-            editing: {
-                $set: false
-            }
-        });
     }
 
     protected getRowClickedUpdateObject() {
@@ -84,17 +97,11 @@ export abstract class TransactionRowComponent<P extends DispatchProp<any>, S ext
         };
     }
 
-    updateField(newField: T) {
+    private stopEditing() {
         this.updateState({
-            field: {
-                $set: newField
+            editing: {
+                $set: false
             }
         });
-    }
-
-    updateState(stateUpdate: any) {
-        this.setState(oldState =>
-            update(oldState, stateUpdate)
-        );
     }
 }

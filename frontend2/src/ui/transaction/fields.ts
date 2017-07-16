@@ -1,18 +1,23 @@
 import * as Moment from 'moment';
+import {
+    Change, ComplexTransactionChange, RowChange, TransactionChange, UpdateAmount, UpdateComment,
+    UpdateComplexTransaction,
+    UpdateDate, UpdateSimpleTransaction, UpdateTransactionItem
+} from '../../core/transaction/actions';
 
-export interface FieldLike {
-    isError(): boolean
-    getChange(): any
+export interface FieldLike<C extends Change> {
+    isError(): boolean;
+    getChange(): C | null;
 }
 
-export interface Field<F extends Field<F, T>, T> extends FieldLike {
+export interface Field<F extends Field<F, T, C>, T, C extends RowChange> extends FieldLike<C> {
     oldValue: T;
     error: boolean;
     getOldValueAsString(): string;
-    onChange(newValue: string): F
+    onChange(newValue: string): F;
 }
 
-abstract class AbstractField<F extends AbstractField<F, T>, T> implements Field<F, T> {
+abstract class AbstractField<F extends AbstractField<F, T, C>, T, C extends RowChange> implements Field<F, T, C> {
     oldValue: T;
     newValue: T | null;
     error: boolean;
@@ -23,15 +28,17 @@ abstract class AbstractField<F extends AbstractField<F, T>, T> implements Field<
         this.error = error;
     }
 
-    abstract onChange(newValue: string): F
-    abstract generateChange(): any
-    abstract getOldValueAsString(): string
+    abstract onChange(newValue: string): F;
+
+    abstract generateChange(): C;
+
+    abstract getOldValueAsString(): string;
 
     isError(): boolean {
         return this.error;
     }
 
-    getChange(): any {
+    getChange(): C | null {
         if (this.newValue === null || this.newValue === this.oldValue) {
             return null;
         }
@@ -40,7 +47,7 @@ abstract class AbstractField<F extends AbstractField<F, T>, T> implements Field<
     }
 }
 
-export class DateField extends AbstractField<DateField, Date> {
+export class DateField extends AbstractField<DateField, Date, UpdateDate> {
     getOldValueAsString(): string {
         return Moment(this.oldValue).format('YYYY-MM-DD');
     }
@@ -54,15 +61,15 @@ export class DateField extends AbstractField<DateField, Date> {
         }
     }
 
-    generateChange(): any {
+    generateChange(): UpdateDate {
         return {
             type: 'UPDATE_DATE',
-            newDate: this.newValue
+            newDate: this.newValue as Date
         };
     }
 }
 
-export class AmountField extends AbstractField<AmountField, number> {
+export class AmountField extends AbstractField<AmountField, number, UpdateAmount> {
     getOldValueAsString(): string {
         return String(this.oldValue);
     }
@@ -77,15 +84,15 @@ export class AmountField extends AbstractField<AmountField, number> {
         }
     }
 
-    generateChange(): any {
+    generateChange(): UpdateAmount {
         return {
             type: 'UPDATE_AMOUNT',
-            newAmount: this.newValue
+            newAmount: this.newValue as number
         };
     }
 }
 
-export class CommentField extends AbstractField<CommentField, string> {
+export class CommentField extends AbstractField<CommentField, string, UpdateComment> {
     getOldValueAsString(): string {
         return this.oldValue;
     }
@@ -94,18 +101,18 @@ export class CommentField extends AbstractField<CommentField, string> {
         return new CommentField(this.oldValue, newValue);
     }
 
-    generateChange(): any {
+    generateChange(): UpdateComment {
         return {
             type: 'UPDATE_COMMENT',
-            newComment: this.newValue
+            newComment: this.newValue as string
         };
     }
 }
 
-abstract class CompositeField implements FieldLike {
-    fields: FieldLike[];
+abstract class CompositeField<C extends Change, S extends Change> implements FieldLike<C> {
+    fields: FieldLike<S>[];
 
-    constructor(fields: FieldLike[]) {
+    constructor(fields: FieldLike<S>[]) {
         this.fields = fields;
     }
 
@@ -117,42 +124,48 @@ abstract class CompositeField implements FieldLike {
         return nbOfFieldsWithError !== 0;
     }
 
-    getChange(): any {
-        let changes: any[] = [];
+    getChange(): C | null {
+        let changes: S[] = [];
         this.fields.forEach(f => {
             const change = f.getChange();
-            if(change === null) {
+            if (change === null) {
                 return;
             }
             changes.push(change);
         });
 
-        if(changes.length === 0) {
+        if (changes.length === 0) {
             return null;
         }
 
         return this.generateChange(changes);
     }
 
-    abstract generateChange(changes: any[]): any
+    abstract generateChange(changes: S[]): C;
 }
 
-export abstract class RowField<T extends RowField<T>> extends CompositeField {
+type TransOrItem = TransactionChange | UpdateTransactionItem;
+export abstract class RowField<T extends RowField<T>> extends CompositeField<TransOrItem, ComplexTransactionChange> {
     date: DateField;
     comment: CommentField;
     amount: AmountField;
 
-    constructor(date: DateField, comment: CommentField, amount: AmountField, extraFields: FieldLike[] = []) {
-        super(([date, comment, amount] as FieldLike[]).concat(extraFields));
+    constructor(date: DateField,
+                comment: CommentField, amount: AmountField,
+                extraFields: TransactionItemField[] = []) {
+        const basicFields = [date, comment, amount] as FieldLike<ComplexTransactionChange>[];
+        super(basicFields.concat(extraFields as FieldLike<ComplexTransactionChange>[]));
 
         this.date = date;
         this.comment = comment;
         this.amount = amount;
     }
 
-    abstract withDate(date: DateField): T
-    abstract withComment(comment: CommentField): T
-    abstract withAmount(amount: AmountField): T
+    abstract withDate(date: DateField): T;
+
+    abstract withComment(comment: CommentField): T;
+
+    abstract withAmount(amount: AmountField): T;
 }
 
 export class SimpleTransactionField extends RowField<SimpleTransactionField> {
@@ -175,7 +188,7 @@ export class SimpleTransactionField extends RowField<SimpleTransactionField> {
         return new SimpleTransactionField(this.uuid, this.date, this.comment, amount);
     }
 
-    generateChange(changes: any[]): any {
+    generateChange(changes: RowChange[]): UpdateSimpleTransaction {
         return {
             type: 'UPDATE_SIMPLE_TRANSACTION',
             uuid: this.uuid,
@@ -188,7 +201,11 @@ export class ComplexTransactionField extends RowField<ComplexTransactionField> {
     uuid: string;
     items: TransactionItemField[];
 
-    constructor(uuid: string, date: DateField, comment: CommentField, amount: AmountField, items: TransactionItemField[]) {
+    constructor(uuid: string,
+                date: DateField,
+                comment: CommentField,
+                amount: AmountField,
+                items: TransactionItemField[]) {
         super(date, comment, amount, items);
         this.uuid = uuid;
         this.items = items;
@@ -208,13 +225,13 @@ export class ComplexTransactionField extends RowField<ComplexTransactionField> {
 
     withItem(newItem: TransactionItemField): ComplexTransactionField {
         let updatedItems = this.items.map(item =>
-            item.id === newItem.id? newItem : item
+            item.id === newItem.id ? newItem : item
         );
 
         return new ComplexTransactionField(this.uuid, this.date, this.comment, this.amount, updatedItems);
     }
 
-    generateChange(changes: any[]): any {
+    generateChange(changes: ComplexTransactionChange[]): UpdateComplexTransaction {
         return {
             type: 'UPDATE_COMPLEX_TRANSACTION',
             uuid: this.uuid,
@@ -243,7 +260,7 @@ export class TransactionItemField extends RowField<TransactionItemField> {
         return new TransactionItemField(this.id, this.date, this.comment, amount);
     }
 
-    generateChange(changes: any[]): any {
+    generateChange(changes: RowChange[]): UpdateTransactionItem {
         return {
             type: 'UPDATE_TRANSACTION_ITEM',
             id: this.id,

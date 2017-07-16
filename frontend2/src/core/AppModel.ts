@@ -1,5 +1,5 @@
-import {Summary} from "./summary";
-import {Transaction} from "./transaction/transaction";
+import {Summary} from './summary';
+import {Transaction} from './transaction/transaction';
 
 export class AppState {
     loginState: LoginState;
