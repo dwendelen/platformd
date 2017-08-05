@@ -23,8 +23,8 @@ let initial: AppState = {
 let reducers = combineReducers({
     'loginState': LoginReducer,
     'accountDetails': TransactionReducer,
-    'accountSummaries': EchoReducer,
-    'bucketSummaries': EchoReducer
+    'accountSummaries': EchoReducer(),
+    'bucketSummaries': EchoReducer()
 });
 
 export const store = createStore(reducers, initial, applyMiddleware(logger));
