@@ -1,11 +1,18 @@
+import Account.Types
+import Account.Update
+import Account.View exposing (accountPage)
+import Budget.View exposing (budgetPage)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import List exposing (map)
 import Maybe exposing (withDefault)
 import Navigation
-import State exposing (State)
-import Summary exposing (Summary, accounts)
-import Transaction exposing (transactions)
+
+import Summary.Data exposing (accounts)
+import Summary.Types exposing (Summary)
+import Summary.View exposing (accountSummary)
+import Account.Data exposing (transactions)
+import Types exposing (Msg(AccountMsg, UpdateRoute), Route(AccountPage, BudgetPage, LoginPage), State, UiState)
 import UrlParser exposing (parseHash, (</>))
 
 stylesheet: String -> Html Msg
@@ -30,11 +37,6 @@ main =
         }
 
 -- Model
-type alias UiState =
-    { route: Route
-    , appState: State
-    }
-
 init : Navigation.Location -> (UiState, Cmd Msg)
 init location =
     (initialState location, Cmd.none)
@@ -49,19 +51,18 @@ initialState location =
         }
     }
 
-
 -- Update
-type alias Url =
-    String
-
-type Msg
-    = UpdateRoute Route
 
 update : Msg->UiState->(UiState, Cmd Msg)
 update msg state =
     case msg of
         UpdateRoute newRoute ->
             ({state | route = newRoute}, Cmd.none)
+        AccountMsg msg -> ({state | appState = updateAccountDetails state.appState msg}, Cmd.none)
+
+updateAccountDetails: State -> Account.Types.Msg -> State
+updateAccountDetails appState msg =
+    {appState | accountDetails = (Account.Update.update msg appState.accountDetails)}
 
 updateUrl: Navigation.Location -> Msg
 updateUrl location =
@@ -93,12 +94,9 @@ pageRouter: UiState -> Html Msg
 pageRouter state =
     case state.route of
         LoginPage -> loginPage state.appState
-        BudgetPage -> loginPage state.appState
+        BudgetPage -> budgetPage state.appState
         AccountPage account -> accountPage state.appState account
 
-type Route = LoginPage
-           | BudgetPage
-           | AccountPage String
 
 route: Navigation.Location -> Route
 route location =
@@ -110,27 +108,13 @@ routes =
         UrlParser.map BudgetPage (UrlParser.s "budget"),
         UrlParser.map AccountPage (UrlParser.s "accounts" </> UrlParser.string)
     ]
-accountSummary : Summary -> Html Msg
-accountSummary summary =
-    a [href ("#/accounts/" ++ summary.uuid)] [
-        div [class "alpha grid_6 omega"] [
-            div [class "alpha grid_4 name"] [text summary.name],
-            div [classList [
-                    ("grid_2 omega currency", True),
-                    ("negative", summary.balance < 0)]
-                 ] [text (toString summary.balance)]
-        ]
-    ]
+
 logoutComponent: Html Msg
 logoutComponent = div [class "alpha grid_6 omega" ] [text "Logout"]
 
 loginPage: State -> Html Msg
 loginPage state =
     div [] [text "Login"]
-
-accountPage: State -> String -> Html Msg
-accountPage state uuid =
-    div [] [text ("account " ++ uuid)]
 
 -- Subscriptions
 subscriptions: UiState -> Sub Msg

@@ -1,35 +1,6 @@
-module Transaction exposing (Transaction, transactions)
+module Account.Data exposing (..)
 
-import Date exposing (Date)
-
-type Transaction =
-      ComplexTransaction ComplexTransactionData
-    | SimpleTransaction SimpleTransactionData
-
-type alias SimpleTransactionData =
-    { uuid: String
-    , date: String
-    , otherAccount: String
-    , comment: String
-    , amount: Float
-    }
-
-type alias ComplexTransactionData =
-    { uuid: String
-    , date: String
-    , comment: String
-    , amount: Float
-    , otherItems: List TransactionItem
-    }
-
-type alias TransactionItem =
-    { id: Float
-    , date: String
-    , account: String
-    , comment: String
-    , amount: Float
-    }
-
+import Account.Types exposing (..)
 
 transactions: List Transaction
 transactions = [
@@ -85,6 +56,7 @@ transactions = [
     , date= "2017-04-07"
     , comment= "Lets test complex"
     , amount= 23456.78
+    , expanded = False
     , otherItems= [
         { id= 0
         , date= "2017-04-07"
@@ -103,6 +75,7 @@ transactions = [
     , date= "2017-04-07"
     , comment= "Lets test complex"
     , amount= 23456.78
+    , expanded = False
     , otherItems= [
         { id= 0
         , date= "2017-04-07"

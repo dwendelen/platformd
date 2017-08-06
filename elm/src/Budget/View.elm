@@ -1,11 +1,11 @@
-module Budget exposing (budgetComponent)
+module Budget.View exposing (budgetPage)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import State exposing (State)
+import Types exposing (Msg, State)
 
-budgetComponent: State -> Html msg
-budgetComponent = 
+budgetPage: State -> Html Msg
+budgetPage _ =
     div [] [
         div [class "alpha grid_17 omega center"] [
             h1 [class "no-top-margin"] [text "Budget"]

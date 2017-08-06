@@ -1,12 +1,7 @@
-module Summary exposing (Summary, accounts)
+module Summary.Data exposing (..)
 
 import List
-
-type alias Summary =
-    { uuid: String
-    , name: String
-    , balance: Float
-    }
+import Summary.Types exposing (Summary)
 
 accounts: List Summary
 accounts = [
