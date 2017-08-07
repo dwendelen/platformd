@@ -14,7 +14,7 @@ import Summary.Data exposing (accounts)
 import Summary.Types exposing (Summary)
 import Summary.View exposing (accountSummary)
 import Account.Data exposing (transactions)
-import Types exposing (Msg(AccountMsg, UpdateRoute), Route(AccountPage, BudgetPage, LoginPage), State, State)
+import Types exposing (..)
 import Update exposing (update)
 import UrlParser exposing (parseHash, (</>))
 
@@ -74,7 +74,7 @@ navigationBarContent state =
             div [class "alpha grid_6 omega"] [ text "Budget"]
         ] ::
         List.map accountSummary state.summaries ++
-        [ logoutComponent ]
+        [ Html.map LoginMsg logoutComponent ]
     else
         [
             a [href "#/login"] [
@@ -96,7 +96,7 @@ stylesheet url =
 pageRouter: State -> Html Msg
 pageRouter state =
     case state.route of
-        LoginPage -> loginPage state
+        LoginPage -> Html.map LoginMsg (loginPage state.loginState)
         BudgetPage -> budgetPage state
         AccountPage account -> accountPage state account
 
