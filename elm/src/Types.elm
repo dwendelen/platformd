@@ -1,29 +1,21 @@
 module Types exposing (..)
 
 import Account.Types exposing (Transaction)
+import Login.Types exposing (LoginState)
 import Summary.Types exposing (Summary)
 
-type alias UiState =
+type alias State =
     { route: Route
-    , appState: State
+    , loginState: LoginState
+    , summaries: List Summary
+    , accountDetails: List Transaction
     }
 
 type Route = LoginPage
            | BudgetPage
            | AccountPage String
 
-type alias State =
-    { loginState: LoginState
-    , summaries: List Summary
-    , accountDetails: List Transaction
-    }
-
-type alias LoginState =
-    { loggedIn: Bool
-    , token: String
-    , userId: String
-    }
-
 type Msg
     = UpdateRoute Route
+    | LoginMsg Login.Types.Msg
     | AccountMsg Account.Types.Msg

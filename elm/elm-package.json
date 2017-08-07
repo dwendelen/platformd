@@ -4,10 +4,7 @@
     "repository": "https://github.com/user/project.git",
     "license": "BSD3",
     "source-directories": [
-        "src",
-        "src/account",
-        "src/budget",
-        "src/summary"
+        "src"
     ],
     "exposed-modules": [],
     "dependencies": {
