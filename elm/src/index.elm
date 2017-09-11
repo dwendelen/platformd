@@ -2,6 +2,8 @@ import Account.Types
 import Account.Update
 import Account.View exposing (accountPage)
 import Budget.View exposing (budgetPage)
+import Console.Commands exposing (commands)
+import Console.View exposing (console)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import List exposing (map)
@@ -44,6 +46,10 @@ initialState location =
     , loginState = LoggedOut
     , summaries = accounts
     , accountDetails = transactions
+    , consoleState =
+        { line = ""
+        , commands = commands
+        }
     }
 
 
@@ -59,7 +65,8 @@ view state =
             div [id "content", class "prefix_1 grid_17"] [
                 pageRouter state
             ]
-        ]
+        ],
+        Html.map ConsoleMsg (console state.consoleState)
     ]
 
 navigationBar state =
