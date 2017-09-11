@@ -10,4 +10,4 @@ loginPage state =
     div [onClick (Login {token = "token", userId = "userId"})] [text "Login"]
 
 logoutComponent: Html Msg
-logoutComponent = div [class "alpha grid_6 omega", onClick Logout ] [text "Logout"]
+logoutComponent = div [class "alpha grid_6 omega", onClick Logout, style [("cursor", "pointer")]] [text "Logout"]
