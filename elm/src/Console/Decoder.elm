@@ -1,5 +1,13 @@
 module Console.Decoder exposing (ctor, string, int, end)
 
+{-
+    Example:
+        type MyType = MyCon String Int
+
+        decode = ctor MyCon <| string <| int <| end
+        result = decode ["A", "5"]
+-}
+
 type alias Decoder a = List String -> Result String a
 
 ctor: a -> (a -> Decoder r) -> Decoder r
