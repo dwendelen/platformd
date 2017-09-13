@@ -44,16 +44,24 @@ a.logout-link {
     cursor: pointer;
 }
 
-.console {
-    background-color: black;
-    color: white;
-    border: none;
-    outline: none;
+.console_container {
     position: absolute;
     bottom: 0px;
     left: 0px;
     right: 0px;
+    font-family: monospace;
+    font-size: 12pt;
 }
+
+.console {
+    border: none;
+    outline: none;
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    font-size: 12pt;
+}
+
 /*.transactions > div {*/
     /*padding-top: 6px;*/
     /*padding-bottom: 6px;*/

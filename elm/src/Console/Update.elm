@@ -8,25 +8,32 @@ update msg state =
         ConsoleKey key ->
             handleKey key state
 
-
 handleKey : String -> (ConsoleState msg) -> (ConsoleState msg, Maybe msg)
 handleKey key state =
     case key of
         "Enter" ->
-            ({state | line = ""}, execute state)
+            let
+                (newState, maybeMsg) = execute state
+            in
+                ({newState | line = ""} |> resetTabCount, maybeMsg)
         "Tab" ->
             (autocomplete state, Nothing)
         "Backspace" ->
-            ({state | line = String.dropRight 1 state.line}, Nothing)
+            ({state | line = String.dropRight 1 state.line} |> resetTabCount, Nothing)
         _ ->
             if isChar key then
-                ({state | line = state.line ++ key}, Nothing)
+                ({state | line = state.line ++ key} |> resetTabCount, Nothing)
             else
-                (state, Nothing)
+                (state |> resetTabCount, Nothing)
 
 isChar : String -> Bool
 isChar str =
     String.length str == 1
+
+
+resetTabCount : ConsoleState cmd -> ConsoleState cmd
+resetTabCount state =
+    {state | tabCount = 0}
 
 autocomplete : ConsoleState cmd -> ConsoleState cmd
 autocomplete state =
@@ -38,38 +45,41 @@ autocomplete state =
         case eligible of
             head::[] ->
                 {state | line = head ++ " "}
-            _ ->
+            [] ->
                 state
+            _ ->
+                if state.tabCount == 1 then
+                    outputOptions eligible (resetTabCount state)
+                else
+                    {state | tabCount = state.tabCount + 1}
+
+outputOptions eligible state =
+    {state | output = String.join " " eligible}
 
 
-execute : ConsoleState msg -> Maybe msg
+execute : ConsoleState msg -> (ConsoleState msg, Maybe msg)
 execute state =
     let
         items = String.split " " state.line
+            |> List.filter (\s -> not (String.isEmpty s))
     in
         case items of
             head::tail ->
-                executeCmd state.commands head tail
+                let
+                    (output, msg) = executeCmd state.commands head tail
+                in
+                    ({state | output = output}, msg)
             _ ->
-                Nothing
+                (state, Nothing)
 
-executeCmd : List (Command msg) -> String -> List String -> Maybe msg
+executeCmd : List (Command msg) -> String -> List String -> (String, Maybe msg)
 executeCmd commands command args =
+    getCommand commands command
+        |> Maybe.map (\c -> ("",  c.execute args))
+        |> Maybe.withDefault ("Unknown command: " ++ command, Nothing)
+
+getCommand : List (Command msg) -> String -> Maybe (Command msg)
+getCommand commands command =
     commands
         |> List.filter (\c -> c.name == command)
         |> List.head
-        |> Maybe.andThen (\c -> c.execute args)
-
-{-
-execute : String -> List String -> Cmd msg
-execute line commands =
-    let
-        items = String.split " " line
-    in
-        executeCmd commands items.head items.tail
-
-executeCmd : List String -> String -> List String -> Cmd msg
-executeCmd commands command args =
-    let
-        applicable = filter
--}

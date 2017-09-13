@@ -48,6 +48,8 @@ initialState location =
     , accountDetails = transactions
     , consoleState =
         { line = ""
+        , output = ""
+        , tabCount = 0
         , commands = commands
         }
     }

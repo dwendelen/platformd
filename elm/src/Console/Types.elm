@@ -2,6 +2,8 @@ module Console.Types exposing (..)
 
 type alias ConsoleState msg =
     { line: String
+    , output: String
+    , tabCount: Int
     , commands: List (Command msg)
     }
 
